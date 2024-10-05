@@ -3,18 +3,18 @@ Contributors: infothemecom
 Donate link: https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/
 Tags: WordPress Poll, voting, poll, contest, voting plugin
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.6
 Stable tag: 3.5
 Requires PHP: 7.4
 License: GPLv2 or Later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
-ePoll is a FREE WordPress voting plugin for creating customizable and responsive poll, online election voting contest using image / photo & video on your website.
+ePoll is a FREE WordPress poll & voting plugin for creating customizable, responsive poll online election voting contest & survey with image & video on your website.
 
 == Description ==
 
 
-### Wordpress Poll & Voting Plugin
+### WordPress Voting & Poll Plugin 
 
 * [WordPress Poll plugin demo](https://infotheme.in/plugins/epoll/v3.1/demo/)
 * [Poll Voting Contest Demo](https://infotheme.in/plugins/epoll/v3.1/demo/all-voting-contests/)
