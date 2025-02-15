@@ -3,8 +3,8 @@ Contributors: infothemecom
 Donate link: https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/
 Tags: WordPress Poll, voting, poll, contest, voting plugin
 Requires at least: 5.0
-Tested up to: 6.6
-Stable tag: 3.5
+Tested up to: 6.7
+Stable tag: 3.6
 Requires PHP: 7.4
 License: GPLv2 or Later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -226,3 +226,7 @@ Yes, the plugin comes with a voter form builder that allows you to collect any i
 * Date: 16-Jul-2024
 * Arbitrary File Upload Issue Fix
 * Sanitization and Nonce Security Fix
+
+= 3.6 =
+* Date: 15-Feb-2025
+* 🛠️ Fixed jQuery conflict during voting ✅ and ensured voting applies to all contests 🏆 as per voter selection for both Voting Contest & Poll 📊.

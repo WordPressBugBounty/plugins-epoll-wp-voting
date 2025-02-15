@@ -5,7 +5,7 @@ Plugin Uri: https://infotheme.net/product/epoll-pro/
 Description: The WP Poll Maker & Voting Plugin is a unique advanced and stylish voting poll system & online contest system designed to integrate voting / poll / survey / election quiz systems into your post, pages and everywhere in website by just a shortcode. Add poll system to your post by placing shortcode or add voting system into your website.
 Author: Poll Maker & Voting Plugin Team (InfoTheme)
 Author URI: https://www.infotheme.net
-Version: 3.5
+Version: 3.6
 Tags: poll, contest, poll plugin, voting plugin, election plugin, survey plugin, polling, voting, vote, survey, election, contest system, poll system, wp voting, wp poll, user poll, user voting, wp poll, poll, voting system, wp voting
 Text Domain: it_epoll
 Requires PHP: 5.6

@@ -2,7 +2,10 @@ jQuery(document).ready(function() {
 	
     // Get the client's fingerprint id
 const it_epoll_client_fingerprint = '';
-	jQuery('.eg_main_content #epoll_container_opinion').each(function(){
+jQuery('.eg_main_content').each(function(){
+	var it_epoll_container = jQuery(this);
+	jQuery(it_epoll_container).find('#epoll_container_opinion').each(function(){
+
 
 		var it_epoll_opionion_item = jQuery(this);
 		jQuery(it_epoll_opionion_item).find('#epoll_poll_opinion_form').validate({
@@ -76,5 +79,7 @@ const it_epoll_client_fingerprint = '';
 		});
 		
 	});
+
+});
 
 });
