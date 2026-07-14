@@ -1,4 +1,7 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /***************
  * Author: Rahul Negi
  * Team: InfoTheme
@@ -17,7 +20,7 @@ function ajax_it_epoll_opinion_vote() {
 	{
 		$wp_nonce ='';
 		if(isset($_POST['wp_nonce'])){
-			$wp_nonce = sanitize_text_field($_POST['wp_nonce']);
+			$wp_nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) );
 		}
 		//Wp Nonce Security Check
 		if ( ! wp_verify_nonce( $wp_nonce, 'it_epoll_opinion' ) ){
@@ -25,8 +28,7 @@ function ajax_it_epoll_opinion_vote() {
 		}
 		
 		it_epoll_init_unique_vote_session();
-		$data = array();
-		parse_str(sanitize_text_field($_POST['data']),$data);
+		$data = it_epoll_parse_post_form_data( 'data' );
 	
 		if(isset($data['it_epoll_poll_id'])){
 			$poll_id = intval(sanitize_text_field($data['it_epoll_poll_id']));
@@ -55,7 +57,7 @@ function ajax_it_epoll_opinion_vote() {
 		$fingerprint ='';
 
 		if(isset($_POST['fingerprint'])){
-			$fingerprint = sanitize_text_field($_POST['fingerprint']);
+			$fingerprint = sanitize_text_field( wp_unslash( $_POST['fingerprint'] ) );
 		}
 
 		if(!it_epoll_check_for_unique_voting($poll_id,$option_id)){
@@ -63,17 +65,19 @@ function ajax_it_epoll_opinion_vote() {
 			do_action('it_epoll_make_opinion_voting_action', array('poll_id'=>$poll_id, 'option_id'=>$option_id,'data'=>array(),'fingerprint'=>$fingerprint));
 		}else{
 			$outputdata['voting_status'] = "error";
-			$outputdata['msg'] = __('You Already Voted','it_epoll');
+			$outputdata['msg'] = __('You Already Voted','epoll-wp-voting');
 			it_epoll_generate_unique_vote_session('it_epoll_session_'.$poll_id);
-			print_r(wp_json_encode($outputdata));
+			echo wp_json_encode( $outputdata );
+			exit;
 		}
 	}else{
 		$outputdata['voting_status'] = "error";
-		$outputdata['msg'] = __('Something Went Wrong','it_epoll');
+		$outputdata['msg'] = __('Something Went Wrong','epoll-wp-voting');
 	
 		it_epoll_generate_unique_vote_session('it_epoll_session');
 	
-		print_r(wp_json_encode($outputdata));
+		echo wp_json_encode( $outputdata );
+		exit;
 	}
 	die();
 }
@@ -91,16 +95,14 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 
 			$wp_nonce ='';
 			if(isset($_POST['wp_nonce'])){
-				$wp_nonce = sanitize_text_field($_POST['wp_nonce']);
+				$wp_nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) );
 			}
 			//Wp Nonce Security Check
 			if ( ! wp_verify_nonce( $wp_nonce, 'it_epoll_opinion' ) ){
 				die(wp_json_encode(array("voting_status"=>"error","msg"=>"Security Check Failed: Please Refresh The Page!")));
 			}
 			it_epoll_init_unique_vote_session();
-			$data = array();
-		
-			parse_str(($_POST['data']),$data);
+			$data = it_epoll_parse_post_form_data( 'data' );
 			
 			if(isset($data['it_epoll_poll_id'])){
 				$poll_id = intval(sanitize_text_field($data['it_epoll_poll_id']));
@@ -135,7 +137,7 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 			}
 			$fingerprint ='';
 			if(isset($_POST['fingerprint'])){
-				$fingerprint = sanitize_text_field($_POST['fingerprint']);
+				$fingerprint = sanitize_text_field( wp_unslash( $_POST['fingerprint'] ) );
 			}
 			
 
@@ -144,20 +146,22 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 			do_action('it_epoll_make_opinion_multivoting_action', array('poll_id'=>$poll_id, 'option_id'=>$option_ids,'data'=>array(),'fingerprint'=>$fingerprint));	
 		}else{
 			$outputdata['voting_status'] = "error";
-			$outputdata['msg'] = __('You Already Voted','it_epoll');
+			$outputdata['msg'] = __('You Already Voted','epoll-wp-voting');
 			if(get_post_meta($poll_id,'it_epoll_poll_multichoice',true)){
 				it_epoll_generate_unique_vote_session('it_epoll_session_'.$option_id,$poll_id);
 			}else{
 				it_epoll_generate_unique_vote_session('it_epoll_session_'.$poll_id,$poll_id);
 			}
-			print_r(wp_json_encode($outputdata));
+			echo wp_json_encode( $outputdata );
+			exit;
 		}
 
 	}else{
 		$outputdata['voting_status'] = "error";
-		$outputdata['msg'] = __('Something Went Wrong','it_epoll');
+		$outputdata['msg'] = __('Something Went Wrong','epoll-wp-voting');
 		it_epoll_generate_unique_vote_session('it_epoll_session');
-		print_r(wp_json_encode($outputdata));
+		echo wp_json_encode( $outputdata );
+		exit;
 	}
 		die();
 	}
@@ -200,7 +204,7 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 							$it_epoll_poll_vote_percentage =0;
 							if($it_epoll_poll_vote_count == 0){
 							$it_epoll_poll_vote_percentage =0;
-							$it_epoll_poll_vote_count_text = __("No Vote",'it_epoll'); 
+							$it_epoll_poll_vote_count_text = __("No Vote",'epoll-wp-voting'); 
 							}elseif($it_epoll_poll_vote_count == 1){
 								$it_epoll_poll_vote_count_text = sprintf(it_epoll_poll_get_ttext('it_epoll_settings_vote_number_text'),$it_epoll_poll_vote_count);
 								$it_epoll_poll_vote_percentage = (int)$it_epoll_poll_vote_count*100/$it_epoll_poll_vote_total_count; 
@@ -239,7 +243,7 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 			$args['status'] = 0;
 			it_epoll_saveIPBasedData($args);
 
-			print_r(wp_json_encode($outputdata));
+			echo wp_json_encode( $outputdata );
 			exit;
 		}
 	}
@@ -304,7 +308,7 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 						$it_epoll_poll_vote_percentage =0;
 						if($it_epoll_poll_vote_count == 0){
 						$it_epoll_poll_vote_percentage =0;
-						$it_epoll_poll_vote_count_text = __("No Vote",'it_epoll'); 
+						$it_epoll_poll_vote_count_text = __("No Vote",'epoll-wp-voting'); 
 						}elseif($it_epoll_poll_vote_count == 1){
 							$it_epoll_poll_vote_count_text = sprintf(it_epoll_poll_get_ttext('it_epoll_settings_vote_number_text'),$it_epoll_poll_vote_count);
 							$it_epoll_poll_vote_percentage = (int)$it_epoll_poll_vote_count*100/$it_epoll_poll_vote_total_count; 
@@ -331,6 +335,7 @@ if(!function_exists('ajax_it_epoll_opinion_multivote')){
 			$outputdata['total_vote'] = $total_vote_text;
 			
 
-			print_r(wp_json_encode($outputdata));
+			echo wp_json_encode( $outputdata );
+			exit;
 		}
 	}

@@ -1,15 +1,38 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! function_exists( 'it_epoll_should_show_frontend_branding' ) ) {
+	function it_epoll_should_show_frontend_branding() {
+		return (bool) get_option( 'it_epoll_settings_show_frontend_branding' );
+	}
+}
+
+if ( ! function_exists( 'it_epoll_set_vote_tracking_cookie' ) ) {
+	function it_epoll_set_vote_tracking_cookie( $cookie_key, $cookie_value ) {
+		if ( headers_sent() ) {
+			return;
+		}
+		setcookie(
+			$cookie_key,
+			$cookie_value,
+			time() + ( DAY_IN_SECONDS * 30 ),
+			COOKIEPATH ? COOKIEPATH : '/',
+			COOKIE_DOMAIN,
+			is_ssl(),
+			true
+		);
+		$_COOKIE[ $cookie_key ] = $cookie_value;
+	}
+}
+
 //Set Voting Session with Key and Value Pair
 if(!function_exists('it_epoll_generate_unique_vote_session')){
 	function it_epoll_generate_unique_vote_session($session_key,$poll_id=''){
 		$poll_restriction = get_post_meta($poll_id,'it_epoll_poll_voting_restriction',true);
 		if($poll_restriction){
-			$session_value = uniqid();
-			if(get_option('it_epoll_settings_cookies_blocking') && $poll_restriction != 'session'){
-				setcookie($session_key, $session_value, time() + (86400 * 30), "/"); 
-			}else{
-				$_SESSION[$session_key]= $session_value;
-			}
+			it_epoll_set_vote_tracking_cookie( $session_key, uniqid( 'epoll_', true ) );
 		}
 	}
 }
@@ -18,26 +41,18 @@ if(!function_exists('it_epoll_generate_unique_vote_session')){
 //Initialize Voting Session
 if(!function_exists('it_epoll_unset_unique_vote_session')){
 	function it_epoll_unset_unique_vote_session($session_key){
-		
-		if(get_option('it_epoll_settings_cookies_blocking')){
-			unset($_COOKIE[$session_key]); 
-			setcookie($session_key, null, -1, '/');
-		}else{
-			unset($_SESSION[$session_key]);
+		if ( headers_sent() ) {
+			return;
 		}
+		unset( $_COOKIE[ $session_key ] );
+		setcookie( $session_key, '', time() - DAY_IN_SECONDS, COOKIEPATH ? COOKIEPATH : '/', COOKIE_DOMAIN, is_ssl(), true );
 	}
 }
 
-//Unset Voting Session
+// Vote tracking uses HTTP cookies only (no PHP sessions on frontend).
 if(!function_exists('it_epoll_init_unique_vote_session')){
 	function it_epoll_init_unique_vote_session(){
-				
-		if(!get_option('it_epoll_settings_cookies_blocking')){
-		
-			if (session_status() === PHP_SESSION_NONE) {
-				@session_start();
-			}
-		}
+		return;
 	}
 }
 
@@ -46,20 +61,10 @@ if(!function_exists('it_epoll_init_unique_vote_session')){
 //Get Voting Session
 if(!function_exists('it_epoll_get_unique_vote_session')){
 	function it_epoll_get_unique_vote_session($session_key){
-				
-		if(get_option('it_epoll_settings_cookies_blocking')){
-			if(isset($_COOKIE[$session_key])){
-				return $_COOKIE[$session_key];
-			}else{
-				return "";
-			}
-		}else{
-			if(isset($_SESSION[$session_key])){
-				return $_SESSION[$session_key];
-			}else{
-				return "";
-			}
+		if(isset($_COOKIE[$session_key])){
+			return sanitize_text_field( wp_unslash( $_COOKIE[$session_key] ) );
 		}
+		return '';
 	}
 }
 
@@ -132,13 +137,9 @@ if(!function_exists('it_epoll_add_cront_event_to_update_poll_end_status')){
 	add_filter( 'it_epoll_poll_schedule_cron_event', 'it_epoll_add_cront_event_to_update_poll_end_status' );
 
 	function it_epoll_add_cront_event_to_update_poll_end_status( $post_id ) {
-	   // Adds once weekly to the existing schedules.
-	   // Define remaining parameters
 	$args = array( $post_id );
 	$hook = 'it_epoll_poll_update_cron_end_event';
 	$timestamp_after_hour = get_post_meta($post_id,'it_epoll_vote_end_date_time',true);
-	// Get the timestmap of an already scheduled event for the same post and the same event action ($hook)
-	// Returns false if it is not scheduled
 	$scheduled_timestamp = wp_next_scheduled( $hook, $args );
 	
 	if( $scheduled_timestamp == false && $timestamp_after_hour) {
@@ -151,11 +152,7 @@ if(!function_exists('it_epoll_add_cront_event_to_update_poll_end_status')){
 if(!function_exists('it_epoll_process_event_status_end_update')){
 
 	add_action( 'it_epoll_poll_update_cron_end_event', 'it_epoll_process_event_status_end_update' );
-	/**
-	 * @param numeric $post_id The ID passed through the hook in the $arg variable
-	 */
 	function it_epoll_process_event_status_end_update( $post_id ) {
-	  // Create the logic to share the post
 	  update_post_meta($post_id,'it_epoll_poll_status','end');
 	}
 }
@@ -166,19 +163,12 @@ if(!function_exists('it_epoll_add_cront_event_to_update_poll_status')){
 	add_filter( 'it_epoll_poll_schedule_cron_event', 'it_epoll_add_cront_event_to_update_poll_status' );
 
 	function it_epoll_add_cront_event_to_update_poll_status( $post_id ) {
-	   // Adds once weekly to the existing schedules.
-	   // Define remaining parameters
 	$args = array( $post_id );
 	$hook = 'it_epoll_poll_update_cron_start_event';
-	
-	// Get the timestmap of an already scheduled event for the same post and the same event action ($hook)
-	// Returns false if it is not scheduled
 	$timestamp_after_hour = get_post_meta($post_id,'it_epoll_vote_start_date_time',true);
-	// Get the timestmap of an already scheduled event for the same post and the same event action ($hook)
-	// Returns false if it is not scheduled
 	$scheduled_timestamp = wp_next_scheduled( $hook, $args );
 		
-		if( $scheduled_timestamp == false && $timestamp_after_hour && $timestamp_after_hour != gmdate('m/d/Y')) {
+		if( $scheduled_timestamp == false && $timestamp_after_hour && $timestamp_after_hour != gmdate('Y-m-d')) {
 			update_post_meta($post_id,'it_epoll_poll_status','upcoming');
 			wp_schedule_single_event( strtotime($timestamp_after_hour), $hook, $args );
 		}
@@ -188,23 +178,25 @@ if(!function_exists('it_epoll_add_cront_event_to_update_poll_status')){
 if(!function_exists('it_epoll_process_event_status_update')){
 
 	add_action( 'it_epoll_poll_update_cron_start_event', 'it_epoll_process_event_status_update' );
-	/**
-	 * @param numeric $post_id The ID passed through the hook in the $arg variable
-	 */
 	function it_epoll_process_event_status_update( $post_id ) {
 		update_post_meta($post_id,'it_epoll_poll_status','live');
-	  // Create the logic to share the post
 	}
 }
 
 if(!function_exists('it_epoll_get_branding_sharer_text')){
 	function it_epoll_get_branding_sharer_text(){
-			return __('&nbsp; &nbsp; &nbsp; Powered By ePoll 3.1 - WordPress Voting Plugin https://wordpress.org/plugins/epoll-wp-voting/','it_epoll');
+		if ( ! it_epoll_should_show_frontend_branding() ) {
+			return '';
+		}
+		return __( ' Via WP Poll & Voting Contest Maker https://wordpress.org/plugins/epoll-wp-voting/', 'epoll-wp-voting' );
 	}
 }
 
 if(!function_exists('it_epoll_get_branding_text')){
 	function it_epoll_get_branding_text(){
-			return __('Via WP Poll & Voting Contest Maker','it_epoll');
+		if ( ! it_epoll_should_show_frontend_branding() ) {
+			return '';
+		}
+		return __( 'Via WP Poll & Voting Contest Maker', 'epoll-wp-voting' );
 	}
 }

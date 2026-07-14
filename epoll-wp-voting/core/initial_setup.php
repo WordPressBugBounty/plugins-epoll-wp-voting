@@ -1,4 +1,8 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Legacy dashboard callback names retained for backward compatibility.
 /***************
  * Author: Rahul Negi
  * Team: InfoTheme
@@ -20,8 +24,8 @@ if ( ! function_exists('it_epoll_admin_menus') ){
     {
 
 		add_menu_page(
-			__('Epoll Dashboard', 'it_epoll'),
-			__('ePoll', 'it_epoll'),
+			__('Epoll Dashboard', 'epoll-wp-voting'),
+			__('ePoll', 'epoll-wp-voting'),
 			'administrator',
 			'epoll_dashboard',
 			'show_it_epoll_dashboard',
@@ -30,31 +34,31 @@ if ( ! function_exists('it_epoll_admin_menus') ){
 		);
 
 		add_submenu_page('epoll_dashboard', 
-		__('Epoll Dashboard', 'it_epoll'),
-		__('Dashboard', 'it_epoll'),
+		__('Epoll Dashboard', 'epoll-wp-voting'),
+		__('Dashboard', 'epoll-wp-voting'),
 		'manage_options', 
 		'epoll_dashboard',
 		null,
 		0);
 
 		add_submenu_page('epoll_dashboard', 
-		__('Epoll Templates', 'it_epoll'),
-		__('Templates', 'it_epoll'),
+		__('Epoll Templates', 'epoll-wp-voting'),
+		__('Templates', 'epoll-wp-voting'),
 		'manage_options', 
 		'epoll_templates',
 		'show_it_epoll_dashboard_template',
 		4);
 
 		add_submenu_page('epoll_dashboard', 
-		__('Epoll AddOns', 'it_epoll'),
-		__('Add-ons', 'it_epoll'),
+		__('Epoll AddOns', 'epoll-wp-voting'),
+		__('Add-ons', 'epoll-wp-voting'),
 		'manage_options', 
 		'epoll_addons',
 		'show_it_epoll_dashboard_addons',
 		5);
 		add_submenu_page('epoll_dashboard', 
-		__('Epoll Options', 'it_epoll'),
-		__('Options', 'it_epoll'),
+		__('Epoll Options', 'epoll-wp-voting'),
+		__('Options', 'epoll-wp-voting'),
 		'manage_options',
 		'epoll_options',
 		'show_it_epoll_dashboard_options',
@@ -63,19 +67,27 @@ if ( ! function_exists('it_epoll_admin_menus') ){
 
     
 		add_submenu_page('epoll_dashboard', 
-		__('Epoll How to Guide', 'it_epoll'),
-		__('How To Guide', 'it_epoll'),
+		__('Epoll How to Guide', 'epoll-wp-voting'),
+		__('How To Guide', 'epoll-wp-voting'),
 		'manage_options', 
 		'epoll_docs',
 		'show_it_epoll_dashboard_guide',
 		7);
 		add_submenu_page('epoll_dashboard', 
-		__('FAQs', 'it_epoll'),
-		__('Support & Faqs', 'it_epoll'),
+		__('FAQs', 'epoll-wp-voting'),
+		__('Support & Faqs', 'epoll-wp-voting'),
 		'manage_options', 
 		'epoll_faq',
 		'show_it_epoll_dashboard_faq',
 		8);
+
+		add_submenu_page('epoll_dashboard',
+		__('Upgrade to Pro', 'epoll-wp-voting'),
+		__('Upgrade to Pro', 'epoll-wp-voting'),
+		'manage_options',
+		'epoll_upgrade',
+		'show_it_epoll_dashboard_upgrade',
+		99);
 		
     }
 }
@@ -96,6 +108,12 @@ if(!function_exists('show_it_epoll_dashboard_guide')){
 if(!function_exists('show_it_epoll_dashboard_faq')){
 	function show_it_epoll_dashboard_faq(){
 		include_once('admin/faq.php');
+	}
+}
+
+if(!function_exists('show_it_epoll_dashboard_upgrade')){
+	function show_it_epoll_dashboard_upgrade(){
+		include_once('admin/upgrade.php');
 	}
 }
 
@@ -138,25 +156,25 @@ if (!function_exists('it_epoll_poll_create_voting_post_type') ) {
 	function it_epoll_poll_create_voting_post_type() {
 	
 		$labels = array(
-			'name'                => _x( 'Voting Contests', 'Post Type General Name', 'it_epoll' ),
-			'singular_name'       => _x( 'Voting Contest', 'Post Type Singular Name', 'it_epoll' ),
-			'menu_name'           => __( 'Voting Contests', 'it_epoll' ),
-			'name_admin_bar'      => __( 'Voting Contest', 'it_epoll' ),
-			'parent_item_colon'   => __( 'Parent Contest:', 'it_epoll' ),
-			'all_items'           => __( 'Voting', 'it_epoll' ),
-			'add_new_item'        => __( 'Create Contest', 'it_epoll' ),
-			'add_new'             => __( 'Create Contest', 'it_epoll' ),
-			'new_item'            => __( 'New Contest', 'it_epoll' ),
-			'edit_item'           => __( 'Edit Contest', 'it_epoll' ),
-			'update_item'         => __( 'Update Contest', 'it_epoll' ),
-			'view_item'           => __( 'View Contest', 'it_epoll' ),
-			'search_items'        => __( 'Search Contests', 'it_epoll' ),
-			'not_found'           => __( 'Not found', 'it_epoll' ),
-			'not_found_in_trash'  => __( 'Not found in Trash', 'it_epoll' ),
+			'name'                => _x( 'Voting Contests', 'Post Type General Name', 'epoll-wp-voting' ),
+			'singular_name'       => _x( 'Voting Contest', 'Post Type Singular Name', 'epoll-wp-voting' ),
+			'menu_name'           => __( 'Voting Contests', 'epoll-wp-voting' ),
+			'name_admin_bar'      => __( 'Voting Contest', 'epoll-wp-voting' ),
+			'parent_item_colon'   => __( 'Parent Contest:', 'epoll-wp-voting' ),
+			'all_items'           => __( 'Voting', 'epoll-wp-voting' ),
+			'add_new_item'        => __( 'Create Contest', 'epoll-wp-voting' ),
+			'add_new'             => __( 'Create Contest', 'epoll-wp-voting' ),
+			'new_item'            => __( 'New Contest', 'epoll-wp-voting' ),
+			'edit_item'           => __( 'Edit Contest', 'epoll-wp-voting' ),
+			'update_item'         => __( 'Update Contest', 'epoll-wp-voting' ),
+			'view_item'           => __( 'View Contest', 'epoll-wp-voting' ),
+			'search_items'        => __( 'Search Contests', 'epoll-wp-voting' ),
+			'not_found'           => __( 'Not found', 'epoll-wp-voting' ),
+			'not_found_in_trash'  => __( 'Not found in Trash', 'epoll-wp-voting' ),
 		);
 		$args = array(
-			'label'               => __( 'Voting Contest', 'it_epoll' ),
-			'description'         => __( 'Voting Contest Description', 'it_epoll' ),
+			'label'               => __( 'Voting Contest', 'epoll-wp-voting' ),
+			'description'         => __( 'Voting Contest Description', 'epoll-wp-voting' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title','thumbnail','revisions','comments'),
 			'hierarchical'        => false,
@@ -187,25 +205,25 @@ if (!function_exists('it_epoll_poll_create_poll_post_type') ) {
 function it_epoll_poll_create_poll_post_type() {
 
 	$labels = array(
-		'name'                => _x( 'Polls', 'Post Type General Name', 'it_epoll' ),
-		'singular_name'       => _x( 'Poll', 'Post Type Singular Name', 'it_epoll' ),
-		'menu_name'           => __( 'Polls', 'it_epoll' ),
-		'name_admin_bar'      => __( 'Poll', 'it_epoll' ),
-		'parent_item_colon'   => __( 'Parent Poll:', 'it_epoll' ),
-		'all_items'           => __( 'Poll', 'it_epoll' ),
-		'add_new_item'        => __( 'Create Poll', 'it_epoll' ),
-		'add_new'             => __( 'Create Poll', 'it_epoll' ),
-		'new_item'            => __( 'New Poll', 'it_epoll' ),
-		'edit_item'           => __( 'Edit Poll', 'it_epoll' ),
-		'update_item'         => __( 'Update Poll', 'it_epoll' ),
-		'view_item'           => __( 'View Poll', 'it_epoll' ),
-		'search_items'        => __( 'Search Polls', 'it_epoll' ),
-		'not_found'           => __( 'Not found', 'it_epoll' ),
-		'not_found_in_trash'  => __( 'Not found in Trash', 'it_epoll' ),
+		'name'                => _x( 'Polls', 'Post Type General Name', 'epoll-wp-voting' ),
+		'singular_name'       => _x( 'Poll', 'Post Type Singular Name', 'epoll-wp-voting' ),
+		'menu_name'           => __( 'Polls', 'epoll-wp-voting' ),
+		'name_admin_bar'      => __( 'Poll', 'epoll-wp-voting' ),
+		'parent_item_colon'   => __( 'Parent Poll:', 'epoll-wp-voting' ),
+		'all_items'           => __( 'Poll', 'epoll-wp-voting' ),
+		'add_new_item'        => __( 'Create Poll', 'epoll-wp-voting' ),
+		'add_new'             => __( 'Create Poll', 'epoll-wp-voting' ),
+		'new_item'            => __( 'New Poll', 'epoll-wp-voting' ),
+		'edit_item'           => __( 'Edit Poll', 'epoll-wp-voting' ),
+		'update_item'         => __( 'Update Poll', 'epoll-wp-voting' ),
+		'view_item'           => __( 'View Poll', 'epoll-wp-voting' ),
+		'search_items'        => __( 'Search Polls', 'epoll-wp-voting' ),
+		'not_found'           => __( 'Not found', 'epoll-wp-voting' ),
+		'not_found_in_trash'  => __( 'Not found in Trash', 'epoll-wp-voting' ),
 	);
 	$args = array(
-		'label'               => __( 'Poll', 'it_epoll' ),
-		'description'         => __( 'Poll Description', 'it_epoll' ),
+		'label'               => __( 'Poll', 'epoll-wp-voting' ),
+		'description'         => __( 'Poll Description', 'epoll-wp-voting' ),
 		'labels'              => $labels,
 		'supports'            => array( 'title','thumbnail','revisions','comments'),
 		'hierarchical'        => false,
@@ -230,3 +248,4 @@ function it_epoll_poll_create_poll_post_type() {
 // Hook into the 'init' action
 add_action( 'init', 'it_epoll_poll_create_poll_post_type', 3 );
 }
+// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals

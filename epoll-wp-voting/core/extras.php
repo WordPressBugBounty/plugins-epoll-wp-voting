@@ -1,4 +1,84 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+// phpcs:disable WordPress.NamingConventions.PrefixAllGlobals -- Legacy API names retained for backward compatibility.
+
+if ( ! function_exists( 'it_epoll_get_uploads_base_path' ) ) {
+	function it_epoll_get_uploads_base_path() {
+		$upload_dir = wp_upload_dir();
+		$base       = trailingslashit( $upload_dir['basedir'] ) . 'epoll-wp-voting/';
+		if ( ! is_dir( $base ) ) {
+			wp_mkdir_p( $base );
+		}
+		return $base;
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_uploads_themes_path' ) ) {
+	function it_epoll_get_uploads_themes_path() {
+		$path = trailingslashit( it_epoll_get_uploads_base_path() ) . 'themes/';
+		if ( ! is_dir( $path ) ) {
+			wp_mkdir_p( $path );
+		}
+		return $path;
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_uploads_addons_path' ) ) {
+	function it_epoll_get_uploads_addons_path() {
+		$path = trailingslashit( it_epoll_get_uploads_base_path() ) . 'addons/';
+		if ( ! is_dir( $path ) ) {
+			wp_mkdir_p( $path );
+		}
+		return $path;
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_bundled_themes_path' ) ) {
+	function it_epoll_get_bundled_themes_path() {
+		return trailingslashit( IT_EPOLL_DIR_PATH ) . 'frontend/templates/';
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_bundled_addons_path' ) ) {
+	function it_epoll_get_bundled_addons_path() {
+		return trailingslashit( IT_EPOLL_DIR_PATH ) . 'backend/addons/';
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_theme_install_path' ) ) {
+	function it_epoll_get_theme_install_path( $theme_id ) {
+		return trailingslashit( it_epoll_get_uploads_themes_path() ) . sanitize_file_name( $theme_id ) . '/';
+	}
+}
+
+if ( ! function_exists( 'it_epoll_get_addon_install_path' ) ) {
+	function it_epoll_get_addon_install_path( $addon_id ) {
+		return trailingslashit( it_epoll_get_uploads_addons_path() ) . sanitize_file_name( $addon_id ) . '/';
+	}
+}
+
+if ( ! function_exists( 'it_epoll_resolve_theme_path' ) ) {
+	function it_epoll_resolve_theme_path( $theme_id ) {
+		$bundled_path = trailingslashit( it_epoll_get_bundled_themes_path() ) . sanitize_file_name( $theme_id ) . '/';
+		if ( is_file( $bundled_path . 'template.php' ) ) {
+			return $bundled_path;
+		}
+		return false;
+	}
+}
+
+if ( ! function_exists( 'it_epoll_resolve_addon_path' ) ) {
+	function it_epoll_resolve_addon_path( $addon_id ) {
+		$bundled_path = trailingslashit( it_epoll_get_bundled_addons_path() ) . sanitize_file_name( $addon_id ) . '/';
+		if ( is_file( $bundled_path . 'addon.php' ) ) {
+			return $bundled_path;
+		}
+		return false;
+	}
+}
+
 // Shortens a number and attaches K, M, B, etc. accordingly
 if(!function_exists('it_epoll_number_shorten')){
 
@@ -28,10 +108,10 @@ if(!function_exists('set_custom_edit_it_epoll_columns')){
 	add_filter( 'manage_it_epoll_poll_posts_columns', 'set_custom_edit_it_epoll_columns' );
 	add_filter( 'manage_it_epoll_opinion_posts_columns', 'set_custom_edit_it_epoll_columns' );
 	function set_custom_edit_it_epoll_columns($columns) {
-		$columns['total_option'] = __( 'Total Options', 'it_epoll' );
-		$columns['poll_status'] = __( 'Poll Status', 'it_epoll' );
-		$columns['shortcode'] = __( 'Shortcode', 'it_epoll' );
-		$columns['view_result'] = __( 'View Result', 'it_epoll' );
+		$columns['total_option'] = __( 'Total Options', 'epoll-wp-voting' );
+		$columns['poll_status'] = __( 'Poll Status', 'epoll-wp-voting' );
+		$columns['shortcode'] = __( 'Shortcode', 'epoll-wp-voting' );
+		$columns['view_result'] = __( 'View Result', 'epoll-wp-voting' );
 		return $columns;
 	}
 }
@@ -47,17 +127,17 @@ if(!function_exists('custom_it_epoll_poll_column')){
 				if(get_post_type($post_id) == 'it_epoll_opinion'){
 					$code = '[IT_EPOLL_POLL id="'.$post_id.'"][/IT_EPOLL_POLL]';
 					if ( is_string( $code ) ){?>
-						<code><?php echo esc_html($code,'it_epoll');?></code>
+						<code><?php echo esc_html($code,'epoll-wp-voting');?></code>
 					<?php }else{
-						echo esc_attr( 'Unable to get shortcode', 'it_epoll' );
+						echo esc_attr( 'Unable to get shortcode', 'epoll-wp-voting' );
 					}
 						
 				}else{
 					$code = '[IT_EPOLL_VOTING id="'.$post_id.'"][/IT_EPOLL_VOTING]';
 					if ( is_string( $code ) ){?>
-						<code><?php echo esc_html($code,'it_epoll');?></code>
+						<code><?php echo esc_html($code,'epoll-wp-voting');?></code>
 					<?php }else{
-						echo esc_attr( 'Unable to get shortcode', 'it_epoll' );
+						echo esc_attr( 'Unable to get shortcode', 'epoll-wp-voting' );
 					}
 				}
 				
@@ -65,9 +145,9 @@ if(!function_exists('custom_it_epoll_poll_column')){
 			case 'poll_status' :
 				$poll_status = get_post_meta(get_the_id(),'it_epoll_poll_status',true);
 				if($poll_status == 'live'){?>
-					<span class='it_epolladmin_pro_badge'><?php echo esc_attr($poll_status,'it_epoll');?></span>
+					<span class='it_epolladmin_pro_badge'><?php echo esc_attr($poll_status,'epoll-wp-voting');?></span>
 				<?php }else{?>
-					<span class='it_epolladmin_pro_badge it_epolladmin_pro_badge_blue_only'><?php echo esc_attr($poll_status,'it_epoll');?></span>
+					<span class='it_epolladmin_pro_badge it_epolladmin_pro_badge_blue_only'><?php echo esc_attr($poll_status,'epoll-wp-voting');?></span>
 				<?php }
 				break;
 			case 'total_option' :
@@ -76,10 +156,10 @@ if(!function_exists('custom_it_epoll_poll_column')){
 				}else{
 					$total_opt = 0;
 				}
-				echo esc_attr($total_opt,'it_epoll');
+				echo esc_attr($total_opt,'epoll-wp-voting');
 				break;
 			case 'view_result' :?>
-				<a href="<?php echo esc_url(admin_url('admin.php?page=epoll_dashboard&tab=reports&id='.$post_id),'it_epoll');?>" class='button button-primary'><?php echo esc_attr('View','it_epoll');?></a>
+				<a href="<?php echo esc_url(admin_url('admin.php?page=epoll_dashboard&tab=reports&id='.$post_id),'epoll-wp-voting');?>" class='button button-primary'><?php echo esc_attr('View','epoll-wp-voting');?></a>
 			<?php	break;
 		}
 	}
@@ -109,27 +189,39 @@ if(!function_exists('it_epoll_change_title_text')){
 
 if(!function_exists('get_it_epoll_local_themes_data')){
 	function get_it_epoll_local_themes_data(){
-		//WP_Filesystem();
-		
-		$template_dir = IT_EPOLL_DIR_PATH . 'frontend/templates';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 		global $wp_filesystem;
 		$wp_filesystem = new WP_Filesystem_Direct( false );
-		$themes = $wp_filesystem->dirlist($template_dir);
-	
-		$theme_data = array_map('it_epoll_theme_dir_array',$themes);
-		$theme_obj = wp_json_encode($theme_data);
-		return $theme_obj;
+
+		$theme_data  = array();
+		$scan_paths  = array(
+			it_epoll_get_bundled_themes_path(),
+		);
+
+		foreach ( $scan_paths as $template_dir ) {
+			if ( ! is_dir( $template_dir ) ) {
+				continue;
+			}
+			$themes = $wp_filesystem->dirlist( $template_dir );
+			if ( $themes ) {
+				foreach ( $themes as $theme ) {
+					$theme_data[] = it_epoll_theme_dir_array( $theme, $template_dir );
+				}
+			}
+		}
+
+		return wp_json_encode( $theme_data );
 	}
 }
 
 if(!function_exists('it_epoll_theme_dir_array')){
-	function it_epoll_theme_dir_array($theme_dir){
-		$template_dir = IT_EPOLL_DIR_PATH . 'frontend/templates/';
-		$template_dir_url = IT_EPOLL_DIR_URL . 'frontend/templates/';
+	function it_epoll_theme_dir_array( $theme_dir, $base_path = '' ) {
+		if ( empty( $base_path ) ) {
+			$base_path = it_epoll_get_bundled_themes_path();
+		}
 		$theme_name = $theme_dir['name'];
-		$theme_dir = $template_dir.$theme_dir['name'].'/';
+		$theme_dir  = trailingslashit( $base_path ) . $theme_name . '/';
 		$theme_data = array();
 		if(is_file($theme_dir.'template.php')){
 		
@@ -223,27 +315,39 @@ if(!function_exists('check_it_epoll_theme_update_left')){
 
 if(!function_exists('get_it_epoll_local_addons_data')){
 	function get_it_epoll_local_addons_data(){
-		
-	
-		$addon_dir = IT_EPOLL_DIR_PATH . 'backend/addons';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-base.php';
 		require_once ABSPATH . 'wp-admin/includes/class-wp-filesystem-direct.php';
 		global $wp_filesystem;
 		$wp_filesystem = new WP_Filesystem_Direct( false );
-		$addons = $wp_filesystem->dirlist($addon_dir);
-		
-		$addon_data = array_map('it_epoll_addon_dir_array',$addons);
-		$addon_obj = wp_json_encode($addon_data);
-		return $addon_obj;
+
+		$addon_data = array();
+		$scan_paths = array(
+			it_epoll_get_bundled_addons_path(),
+		);
+
+		foreach ( $scan_paths as $addon_dir ) {
+			if ( ! is_dir( $addon_dir ) ) {
+				continue;
+			}
+			$addons = $wp_filesystem->dirlist( $addon_dir );
+			if ( $addons ) {
+				foreach ( $addons as $addon ) {
+					$addon_data[] = it_epoll_addon_dir_array( $addon, $addon_dir );
+				}
+			}
+		}
+
+		return wp_json_encode( $addon_data );
 	}
 }
 
 if(!function_exists('it_epoll_addon_dir_array')){
-	function it_epoll_addon_dir_array($addon_dir){
-		$addons_dir = IT_EPOLL_DIR_PATH . 'backend/addons/';
-		$addon_dir_url = IT_EPOLL_DIR_URL . 'backend/addons/';
+	function it_epoll_addon_dir_array( $addon_dir, $base_path = '' ) {
+		if ( empty( $base_path ) ) {
+			$base_path = it_epoll_get_bundled_addons_path();
+		}
 		$addon_name = $addon_dir['name'];
-		$addon_dir = $addons_dir.$addon_dir['name'].'/';
+		$addon_dir  = trailingslashit( $base_path ) . $addon_name . '/';
 		
 		$addon_data = array();
 		if(is_file($addon_dir.'addon.php')){
@@ -292,15 +396,15 @@ if(!function_exists('get_it_epoll_build_theme_data')){
 							
 							$theme_data = $theme;
 							$dont_show = false;
-							$extension_name = __('Unkown Theme','it_epoll');
-							$extension_icon = __('null','it_epoll');
-							$extension_description =__('Tell us about your theme here!','it_epoll');
+							$extension_name = __('Unkown Theme','epoll-wp-voting');
+							$extension_icon = __('null','epoll-wp-voting');
+							$extension_description =__('Tell us about your theme here!','epoll-wp-voting');
 							$extension_supported_version = 1;
 							$extension_type = 2;
-							$extension_version =__('0.1.0','it_epoll');
+							$extension_version =__('0.1.0','epoll-wp-voting');
 							$extension_id = '';
-							$extension_developer = __('infotheme inc.','it_epoll');
-							$extension_preview_url =  __('https://infotheme.in/epoll/themes/default/','it_epoll');
+							$extension_developer = __('infotheme inc.','epoll-wp-voting');
+							$extension_preview_url =  __('https://infotheme.in/epoll/themes/default/','epoll-wp-voting');
 							$extension_download_url = '';
 							$extension_purchase_url = '';
 							$extension_dir_path ="null....";
@@ -342,9 +446,9 @@ if(!function_exists('get_it_epoll_build_theme_data')){
 								<div class="plugin-card-top">
 									<div class="name column-name">
 										<h3>
-											<a href="<?php echo esc_url($extension_preview_url,'it_epoll');?>" target="blank" class="epoll_addon-link_wrap">
-													<?php echo esc_attr($extension_name,'it_epoll');?>
-													<img src="<?php echo esc_url($extension_icon,'it_epoll');?>" class="epoll_addon-icon" alt="<?php echo esc_attr($extension_name,'it_epoll');?>">
+											<a href="<?php echo esc_url($extension_preview_url,'epoll-wp-voting');?>" target="blank" class="epoll_addon-link_wrap">
+													<?php echo esc_attr($extension_name,'epoll-wp-voting');?>
+													<img src="<?php echo esc_url($extension_icon,'epoll-wp-voting');?>" class="epoll_addon-icon" alt="<?php echo esc_attr($extension_name,'epoll-wp-voting');?>">
 												</a>
 										</h3>
 									</div>
@@ -352,65 +456,61 @@ if(!function_exists('get_it_epoll_build_theme_data')){
 										<ul class="plugin-action-buttons it_epoll_plugin_buttons">
 												
 												<?php 
-												if($extension_type == 403){?>
-													<button class="button button-secondary"  id="default" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" disabled><?php echo esc_attr('Coming Soon','it_epoll');?></button>
-												<?php }else{
-													if(!$extension_purchase_url && !$extension_download_url){
+												$is_store_catalog = ! empty( $themes_local );
+												if ( 403 == $extension_type ) { ?>
+													<button class="button button-secondary" id="default" data-id="<?php echo esc_attr( $extension_id, 'epoll-wp-voting' ); ?>" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button>
+												<?php } elseif ( $extension_purchase_url ) { ?>
+													<li><a href="<?php echo esc_url( $extension_purchase_url, 'epoll-wp-voting' ); ?>" target="_blank" class="button button-primary" id="default" data-id="<?php echo esc_attr( $extension_id, 'epoll-wp-voting' ); ?>"><?php esc_attr_e( 'Buy Now', 'epoll-wp-voting' ); ?></a></li>
+												<?php } elseif ( $is_store_catalog ) { ?>
+													<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+												<?php } elseif ( ! $extension_purchase_url && ! $extension_download_url ) {
 														if(!in_array($extension_id,$active_theme)){?>
 														<li>
-															<button class="button button-primary" id="activate" data-action="it_epoll_theme_action_activate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_activate_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Activate','it_epoll');?></button>
+															<button class="button button-primary" id="activate" data-action="it_epoll_theme_action_activate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_activate_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Activate','epoll-wp-voting');?></button>
 														</li>
 														<?php  if($extension_id != 'default'){?>
 														<li>
-															<button class="button button-danger"  id="delete" data-path="<?php echo esc_attr($extension_dir_path,'it_epoll');?>" data-action="it_epoll_theme_action_uninstall" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_uninstall_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Uninstall','it_epoll');?></button>
+															<button class="button button-danger"  id="delete" data-path="<?php echo esc_attr($extension_dir_path,'epoll-wp-voting');?>" data-action="it_epoll_theme_action_uninstall" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_uninstall_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Uninstall','epoll-wp-voting');?></button>
 														</li>
 														<?php } }else{?>
 														<li>
 														<?php  if($extension_id != 'default'){?>
-															<button class="button button-secondary"  id="deactivate" data-action="it_epoll_theme_action_deactivate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_deactivate_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Deactivate','it_epoll');?></button>
+															<button class="button button-secondary"  id="deactivate" data-action="it_epoll_theme_action_deactivate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_deactivate_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Deactivate','epoll-wp-voting');?></button>
 														<?php }else{?>
-															<button class="button button-secondary"  id="default" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" disabled><?php echo esc_attr('Default','it_epoll');?></button>
+															<button class="button button-secondary"  id="default" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>" disabled><?php echo esc_attr('Default','epoll-wp-voting');?></button>
 
 															<?php }?>
 														</li>
-														<?php } }elseif($extension_purchase_url){?>
-															<li><a href="<?php echo esc_url($extension_purchase_url,'it_epoll');?>" target="_blank" class="button button-primary"  id="default" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Buy Now','it_epoll');?></a></li>
-														<?php }elseif($update_availble){?>
-																<li><button class="button button-secondary"  id="install"  data-action="it_epoll_theme_action_install_update" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_install_update_'.$extension_id ),'it_epoll');?>"  data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" data-url="<?php echo esc_url(it_epoll_myext_getMyDownloadUrl($extension_id),'it_epoll');?>"><?php echo esc_attr('Update','it_epoll');?></button></li>
-
-															<?php }else{
-																
-																?>
-																
-																<li><button class="button button-secondary"  id="install"  data-action="it_epoll_theme_action_install_update" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_theme_action_install_update_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" data-url="<?php echo esc_url(it_epoll_myext_getMyDownloadUrl($extension_id),'it_epoll');?>"><?php echo esc_attr('Install','it_epoll');?></button></li>
-															<?php }?>
-													
-													<?php }?>
+														<?php } } elseif ( $update_availble ) { ?>
+																<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+															<?php } else { ?>
+																<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+															<?php } ?>
 													
 											</ul>
 										</div>
 										<div class="desc column-description">
-											<p class="authors"> <cite>By <a href="<?php echo esc_url($extension_preview_url,'it_epoll');?>" target="_blank"><?php echo wp_kses($extension_developer,array('a','b','i','strong'=>array('style'=>'color'),'del'=>array('style'=>'color')));?></a></cite></p>
+											<p class="authors"> <cite>By <a href="<?php echo esc_url($extension_preview_url,'epoll-wp-voting');?>" target="_blank"><?php echo wp_kses($extension_developer,array('a','b','i','strong'=>array('style'=>'color'),'del'=>array('style'=>'color')));?></a></cite></p>
 									
-											<p><?php echo esc_attr($extension_description,'it_epoll');?></p>
+											<p><?php echo esc_attr($extension_description,'epoll-wp-voting');?></p>
 										</div>
 									</div>
 									<div class="plugin-card-notice">
-									<?php if($update_availble){?>
-										<div class="update-message notice inline notice-warning notice-alt"><p><?php echo esc_attr('New Update Available!','it_epoll');?></p></div>
+									<?php if ( $update_availble && empty( $themes_local ) ) { ?>
+										<div class="update-message notice inline notice-warning notice-alt"><p><?php echo esc_attr('New Update Available!','epoll-wp-voting');?></p></div>
 										<?php }?>
 									</div>
 									<div class="plugin-card-bottom">
 											<div class="column-updated">
-											<strong><?php esc_attr_e('Version:','it_epoll');?></strong> <?php echo esc_attr($extension_version,'it_epoll');?>			
+											<strong><?php esc_attr_e('Version:','epoll-wp-voting');?></strong> <?php echo esc_attr($extension_version,'epoll-wp-voting');?>			
 											</div>
 											<div class="column-downloaded">
 												<?php if($extension_type == 1){?>
-													<strong><?php esc_attr_e('Type:','it_epoll');?></strong> <?php esc_attr_e('Funtional & Style','it_epoll');?>
+													<strong><?php esc_attr_e('Type:','epoll-wp-voting');?></strong> <?php esc_attr_e('Funtional & Style','epoll-wp-voting');?>
 												<?php }else{?>
-													<strong><?php esc_attr_e('Type:','it_epoll');?></strong> <?php esc_attr_e('Style Only','it_epoll');?>
+													<strong><?php esc_attr_e('Type:','epoll-wp-voting');?></strong> <?php esc_attr_e('Style Only','epoll-wp-voting');?>
 												<?php }?>
-												<br><strong><?php esc_attr_e('ePoll Compatibility:','it_epoll');?></strong> <?php echo esc_attr($extension_supported_version,'it_epoll');?>
+												<br><strong><?php esc_attr_e('ePoll Compatibility:','epoll-wp-voting');?></strong> <?php echo esc_attr($extension_supported_version,'epoll-wp-voting');?>
 											</div>
 									</div>
 								</div>
@@ -418,7 +518,7 @@ if(!function_exists('get_it_epoll_build_theme_data')){
 									}
 							}
 						}else{
-							echo esc_attr('Please Install A Theme At Least to work this plugin','it_epoll');
+							echo esc_attr('Please Install A Theme At Least to work this plugin','epoll-wp-voting');
 						}
 		}
 }
@@ -426,7 +526,7 @@ if(!function_exists('get_it_epoll_build_theme_data')){
 
 if(!function_exists('it_epoll_myext_getMyDownloadUrl')){
 	function it_epoll_myext_getMyDownloadUrl($extension_id){
-		$response = it_epoll_plugin_api_request(IT_EPOLL_DOWNLOAD_URL."?name=".$extension_id.'&site_url='.site_url(),'it_epoll_plugin_get_download_url_checkerV2_'.$extension_id);
+		$response = it_epoll_plugin_api_request(IT_EPOLL_DOWNLOAD_URL."?name=".$extension_id,'it_epoll_plugin_get_download_url_checkerV2_'.$extension_id);
 		
 		if(!$response) return "";
 		
@@ -475,16 +575,16 @@ if(!function_exists('get_it_epoll_build_addon_data')){
 						
 							$addon_data = $addon;
 			
-							$extension_name = __('Unkown Addon','it_epoll');
-							$extension_icon = __('null','it_epoll');
-							$extension_description =__('Tell us about your addon here!','it_epoll');
+							$extension_name = __('Unkown Addon','epoll-wp-voting');
+							$extension_icon = __('null','epoll-wp-voting');
+							$extension_description =__('Tell us about your addon here!','epoll-wp-voting');
 							$extension_supported_version = 1;
 							$extension_type = 2;
-							$extension_version =__('0.1.0','it_epoll');
+							$extension_version =__('0.1.0','epoll-wp-voting');
 							$extension_id = '';
-							$extension_required = __('default','it_epoll');
-							$extension_developer = __('infotheme inc.','it_epoll');
-							$extension_preview_url =  __('https://infotheme.in/epoll/addon/default/','it_epoll');
+							$extension_required = __('default','epoll-wp-voting');
+							$extension_developer = __('infotheme inc.','epoll-wp-voting');
+							$extension_preview_url =  __('https://infotheme.in/epoll/addon/default/','epoll-wp-voting');
 							$extension_download_url = '';
 							$extension_purchase_url = '';
 							$extension_dir_path ="null....";
@@ -526,16 +626,16 @@ if(!function_exists('get_it_epoll_build_addon_data')){
 						<div class="plugin-card">
 						<?php if(!in_array($extension_required,$active_addon)){?>
 								<div class="plugin-card-notice">
-									<div class="error-message notice inline notice-error error-alt"><p><?php echo esc_attr($extension_required.' Addon Required','it_epoll');?></p></div>
+									<div class="error-message notice inline notice-error error-alt"><p><?php echo esc_attr($extension_required.' Addon Required','epoll-wp-voting');?></p></div>
 								</div>
 								<?php }?>
 								<div class="plugin-card-top">
 									
 									<div class="name column-name">
 										<h3>
-											<a href="<?php echo esc_url($extension_preview_url,'it_epoll');?>" target="blank" class="epoll_addon-link_wrap">
-													<?php echo esc_attr($extension_name,'it_epoll');?>
-													<img src="<?php echo esc_url($extension_icon,'it_epoll');?>" class="epoll_addon-icon" alt="<?php echo esc_attr($extension_name,'it_epoll');?>">
+											<a href="<?php echo esc_url($extension_preview_url,'epoll-wp-voting');?>" target="blank" class="epoll_addon-link_wrap">
+													<?php echo esc_attr($extension_name,'epoll-wp-voting');?>
+													<img src="<?php echo esc_url($extension_icon,'epoll-wp-voting');?>" class="epoll_addon-icon" alt="<?php echo esc_attr($extension_name,'epoll-wp-voting');?>">
 												</a>
 										</h3>
 									</div>
@@ -543,58 +643,58 @@ if(!function_exists('get_it_epoll_build_addon_data')){
 										<ul class="plugin-action-buttons it_epoll_plugin_buttons">
 												
 												<?php 
-												
-												if(!$extension_purchase_url && !$extension_download_url){
+												$is_store_catalog = ! empty( $addons_local );
+												if ( 403 == $extension_type ) { ?>
+													<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+												<?php } elseif ( $extension_purchase_url ) { ?>
+													<li><a href="<?php echo esc_url( $extension_purchase_url, 'epoll-wp-voting' ); ?>" target="_blank" class="button button-primary" id="default" data-id="<?php echo esc_attr( $extension_id, 'epoll-wp-voting' ); ?>"><?php esc_attr_e( 'Buy Now', 'epoll-wp-voting' ); ?></a></li>
+												<?php } elseif ( $is_store_catalog ) { ?>
+													<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+												<?php } elseif ( ! $extension_purchase_url && ! $extension_download_url ) {
 													
 												if(!in_array($extension_id,$active_addon) && in_array($extension_required,$active_addon)){?>
 													<li>
-														<button class="button button-primary" id="activate" data-action="it_epoll_addon_action_activate"  data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_activate_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Activate','it_epoll');?></button>
+														<button class="button button-primary" id="activate" data-action="it_epoll_addon_action_activate"  data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_activate_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Activate','epoll-wp-voting');?></button>
 													</li>
 													<?php  if($extension_id != 'default'){?>
 													<li>
-														<button class="button button-danger"  id="delete" data-path="<?php echo esc_attr($extension_dir_path,'it_epoll');?>" data-action="it_epoll_addon_action_uninstall" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_uninstall_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Uninstall','it_epoll');?></button>
+														<button class="button button-danger"  id="delete" data-path="<?php echo esc_attr($extension_dir_path,'epoll-wp-voting');?>" data-action="it_epoll_addon_action_uninstall" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_uninstall_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Uninstall','epoll-wp-voting');?></button>
 													</li>
 													<?php } }else{?>
 													<li>
 													<?php  if($extension_id != 'default' && in_array($extension_required,$active_addon)){?>
-														<button class="button button-secondary"  id="deactivate" data-action="it_epoll_addon_action_deactivate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_deactivate_'.$extension_id ),'it_epoll');?>" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Deactivate','it_epoll');?></button>
+														<button class="button button-secondary"  id="deactivate" data-action="it_epoll_addon_action_deactivate" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_deactivate_'.$extension_id ),'epoll-wp-voting');?>" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>"><?php echo esc_attr('Deactivate','epoll-wp-voting');?></button>
 													<?php }else{?>
-														<button class="button button-secondary"  id="default" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" disabled><?php echo esc_attr('Default','it_epoll');?></button>
+														<button class="button button-secondary"  id="default" data-id="<?php echo esc_attr($extension_id,'epoll-wp-voting');?>" disabled><?php echo esc_attr('Default','epoll-wp-voting');?></button>
 														<?php }?>
 													</li>
 													
 													
-												<?php } }elseif($extension_purchase_url){?>
-													<li><a href="<?php echo esc_url($extension_purchase_url,'it_epoll');?>" target="_blank" class="button button-primary"  id="default" data-id="<?php echo esc_attr($extension_id,'it_epoll');?>"><?php echo esc_attr('Buy Now','it_epoll');?></a></li>
-												<?php }elseif($update_availble){?>
-														<li><button class="button button-secondary"  id="install"  data-action="it_epoll_addon_action_install_update" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_install_update_'.$extension_id ),'it_epoll');?>"  data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" data-url="<?php echo esc_url(it_epoll_myext_getMyDownloadUrl($extension_id),'it_epoll');?>"><?php echo esc_attr('Update','it_epoll');?></button></li>
-												
-													<?php }else{?>
-														<li><button class="button button-secondary"  id="install"  data-action="it_epoll_addon_action_install_update" data-nonce="<?php echo esc_attr(wp_create_nonce( 'it_epoll_addon_action_install_update_'.$extension_id ),'it_epoll');?>"  data-id="<?php echo esc_attr($extension_id,'it_epoll');?>" data-url="<?php echo esc_url(it_epoll_myext_getMyDownloadUrl($extension_id),'it_epoll');?>"><?php echo esc_attr('Install','it_epoll');?></button></li>
-													<?php }
-													
-													
-													?>
+												<?php } } elseif ( $update_availble ) { ?>
+														<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+													<?php } else { ?>
+														<li><button class="button button-secondary" type="button" disabled><?php esc_attr_e( 'Coming Soon', 'epoll-wp-voting' ); ?></button></li>
+													<?php } ?>
 										</ul>
 									</div>
 									<div class="desc column-description">
-										<p class="authors"> <cite>By <a href="<?php echo esc_url($extension_preview_url,'it_epoll');?>" target="_blank"><?php echo wp_kses($extension_developer,array('a','b','i','strong'=>array('style'=>'color'),'del'=>array('style'=>'color')));?></a></cite></p>
+										<p class="authors"> <cite>By <a href="<?php echo esc_url($extension_preview_url,'epoll-wp-voting');?>" target="_blank"><?php echo wp_kses($extension_developer,array('a','b','i','strong'=>array('style'=>'color'),'del'=>array('style'=>'color')));?></a></cite></p>
 								
-										<p><?php echo esc_attr($extension_description,'it_epoll');?></p>
+										<p><?php echo esc_attr($extension_description,'epoll-wp-voting');?></p>
 									</div>
 								</div>
 								<div class="plugin-card-notice">
-								<?php if($update_availble){?>
-									<div class="update-message notice inline notice-warning notice-alt"><p><?php echo esc_attr('New Update Available!','it_epoll');?></p></div>
+								<?php if ( $update_availble && empty( $addons_local ) ) { ?>
+									<div class="update-message notice inline notice-warning notice-alt"><p><?php echo esc_attr('New Update Available!','epoll-wp-voting');?></p></div>
 									<?php }?>
 								</div>
 								<div class="plugin-card-bottom">
 										<div class="column-updated">
-											<strong><?php esc_attr_e('Version:','it_epoll');?></strong> <?php echo esc_attr($extension_version,'it_epoll');?>				
+											<strong><?php esc_attr_e('Version:','epoll-wp-voting');?></strong> <?php echo esc_attr($extension_version,'epoll-wp-voting');?>				
 										</div>
 										<div class="column-downloaded">
 											
-											<strong><?php esc_attr_e('ePoll Compatibility:','it_epoll');?></strong> <?php echo esc_attr($extension_supported_version,'it_epoll');?>
+											<strong><?php esc_attr_e('ePoll Compatibility:','epoll-wp-voting');?></strong> <?php echo esc_attr($extension_supported_version,'epoll-wp-voting');?>
 											
 										</div>
 								</div>
@@ -603,7 +703,7 @@ if(!function_exists('get_it_epoll_build_addon_data')){
 							}
 						}
 					}else{
-						echo esc_attr('Please Install A addon At Least to work this plugin','it_epoll');
+						echo esc_attr('Please Install A addon At Least to work this plugin','epoll-wp-voting');
 					}
 	}
 }
@@ -643,8 +743,8 @@ if(!function_exists('get_it_epoll_store_themes')){
 					get_it_epoll_build_theme_data(wp_json_encode($response),$themes);
 			}else{?>
 			<div>
-				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','it_epoll');?></h3>
-				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','it_epoll');?></a>
+				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','epoll-wp-voting');?></h3>
+				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','epoll-wp-voting');?></a>
 			</div>
 			<?php }
 	
@@ -665,8 +765,8 @@ if(!function_exists('get_it_epoll_store_addons')){
 					get_it_epoll_build_addon_data(wp_json_encode($response),$addons);
 			}else{?>
 			<div>
-				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','it_epoll');?></h3>
-				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','it_epoll');?></a>
+				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','epoll-wp-voting');?></h3>
+				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','epoll-wp-voting');?></a>
 			</div>
 			<?php }
 		
@@ -693,8 +793,8 @@ if(!function_exists('get_it_epoll_store_docs')){
 				
 			}else{?>
 			<div>
-				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','it_epoll');?></h3>
-				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','it_epoll');?></a>
+				<h3><?php echo esc_attr('Unable to load from store, Please check your internet connection or contact us at support@infotheme.net','epoll-wp-voting');?></h3>
+				<a href="#" onClick="window.location.reload();" class="button"><?php echo esc_attr('Retry','epoll-wp-voting');?></a>
 			</div>
 			<?php }
 	}
@@ -705,13 +805,13 @@ if(!function_exists('get_it_epoll_store_docs')){
 
 if(!function_exists('build_it_epoll_doc_layout')){
 	function build_it_epoll_doc_layout($data){?>
-	<a href="<?php echo esc_url($data->link,'it_epoll');?>" class="it_epoll_admin_box_item_link">
+	<a href="<?php echo esc_url($data->link,'epoll-wp-voting');?>" class="it_epoll_admin_box_item_link">
 		<div class="it_epoll_admin_box_item_content">
-			<h4><?php echo esc_attr($data->title,'it_epoll');?></h4>
-			<p class="it_epoll_admin_box_item_content_description"><?php echo esc_attr($data->desc,'it_epoll');?></p>
-			<span class="it_epoll_admin_item_content_link"><i class="dashicons dashicons-external"></i><?php echo esc_attr(' Read More','it_epoll');?></span>
+			<h4><?php echo esc_attr($data->title,'epoll-wp-voting');?></h4>
+			<p class="it_epoll_admin_box_item_content_description"><?php echo esc_attr($data->desc,'epoll-wp-voting');?></p>
+			<span class="it_epoll_admin_item_content_link"><i class="dashicons dashicons-external"></i><?php echo esc_attr(' Read More','epoll-wp-voting');?></span>
 		</div>
-		<img src="<?php echo esc_url($data->thumbnail,'it_epoll');?>" alt="" width="92" height="92"/>
+		<img src="<?php echo esc_url($data->thumbnail,'epoll-wp-voting');?>" alt="" width="92" height="92"/>
 	</a>
 	<?php			
 	}
@@ -719,113 +819,36 @@ if(!function_exists('build_it_epoll_doc_layout')){
 
 if(!function_exists('build_it_epoll_faq_layout')){
 	function build_it_epoll_faq_layout($data){?>	
-		<a href="<?php echo esc_url($data->link,'it_epoll');?>" class="it_epoll_admin_box_item_link it_epoll_admin_box_item_link_partial">
+		<a href="<?php echo esc_url($data->link,'epoll-wp-voting');?>" class="it_epoll_admin_box_item_link it_epoll_admin_box_item_link_partial">
 			<div class="it_epoll_admin_box_item_content">
-				<h4><?php echo esc_attr($data->title,'it_epoll');?></h4>
-				<p class="it_epoll_admin_box_item_content_description"><?php echo esc_attr($data->desc,'it_epoll');?></p>
-				<span class="it_epoll_admin_item_content_link"><i class="dashicons dashicons-external"></i><?php echo esc_attr(' Read More','it_epoll');?></span>
+				<h4><?php echo esc_attr($data->title,'epoll-wp-voting');?></h4>
+				<p class="it_epoll_admin_box_item_content_description"><?php echo esc_attr($data->desc,'epoll-wp-voting');?></p>
+				<span class="it_epoll_admin_item_content_link"><i class="dashicons dashicons-external"></i><?php echo esc_attr(' Read More','epoll-wp-voting');?></span>
 			</div>
 		</a>
 		<?php
 	}
 }
 
+if ( ! function_exists( 'it_epoll_parse_post_form_data' ) ) {
+	function it_epoll_parse_post_form_data( $field = 'data' ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing -- Nonce is verified in the AJAX handler before this helper runs.
+		if ( ! isset( $_POST[ $field ] ) || ! is_string( $_POST[ $field ] ) ) {
+			return array();
+		}
+		$parsed = array();
+		parse_str( sanitize_textarea_field( wp_unslash( $_POST[ $field ] ) ), $parsed );
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+		return map_deep( $parsed, 'sanitize_text_field' );
+	}
+}
+
 if(!function_exists('it_epoll_install_from_store_zip')){
 	function it_epoll_install_from_store_zip($url,$upload_dir,$action_upload,$type="template"){
-		
-		if(!current_user_can('manage_options')) exit(wp_json_encode(array('sts'=>404,'msg'=>'You don\'t have permission to do this!')));
-          
-	
-		if ( ! function_exists( 'wp_handle_upload' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		if(!current_user_can('manage_options')) {
+			return array('sts'=>404,'msg'=>'You don\'t have permission to do this!');
 		}
-
-		global $wp_filesystem;
-		if ( ! $filesystem ) {
-			WP_Filesystem();
-			  if ( ! $wp_filesystem )
-				nuke_the_world_because_wpfs_cannot_be_initialized_in_case_of_missing_arguments('!');
-		  }
-		$packaging_error = "";
-		$packagin_success = "";
-
-		$package_type = "Template ";
-		if($type == 'addon'){
-			$package_type = "AddOn ";
-		}
-
-		$modulesPathDir ="";
-		if (it_epoll_MyDomainCheck($url)){
-			$downloaded = download_url( $url );
-			if ( is_wp_error($downloaded)){
-				$error_string = $downloaded->get_error_message();
-				$packaging_error = "Unable to download this $package_type. :- ".$error_string;
-			}else{
-				$modulesPathDir = $downloaded;
-			}
-		}else{
-			$packaging_error = "Invalid $package_type Url. Please try again.";
-		}
-		$filepath = ABSPATH . 'wp-content/uploads/installable.zip';
-		if($modulesPathDir){
-			
-			$tempDir = get_temp_dir() . uniqid( time(), false );
-			// Try to unzip the module zip file
-			copy( $modulesPathDir, $filepath );
-			wp_delete_file( $modulesPathDir );
-			$result = unzip_file( $filepath, $tempDir );
-
-			if ( !is_wp_error($result)){
-				$dirs = glob( "{$tempDir}/*", GLOB_ONLYDIR );
-					
-				if ( empty( $dirs ) ){
-					// Nothing to install
-					$packaging_error =  'Archive is empty or does not contain a directory.';
-					
-				}else{
-					$moduleDir = $dirs[0];
-					
-					if ( ! file_exists($moduleDir.'/'.$type.'.php') ){
-						$packaging_error =  "Invalid. $package_type Zip File";
-					}else{
-						$theme_data = get_file_data($moduleDir.'/'.$type.'.php',array('Id'=>'Id'));
-						if(isset($theme_data['Id'])){
-							// Get module directory name.
-							$moduleDirName = basename( $moduleDir );
-
-							// Fallback to plugin's directory
-							$modulesPath = IT_EPOLL_DIR_PATH.$upload_dir.$moduleDirName;
-							if ( ! is_dir( $modulesPath ) && ! wp_mkdir_p( $modulesPath ) ) :
-								$modulesPath = IT_EPOLL_DIR_PATH.$upload_dir.$moduleDirName;
-							endif;
-
-							// Copy template's files
-							$result = copy_dir( $moduleDir, $modulesPath );
-							$packagin_success = "$package_type has been Installed, Try to activate and see it in action";
-						
-						}else{
-							$packaging_error =  "Invalid. $package_type Zip File";
-						}
-					}
-						
-				}
-				
-			}else{
-				$error = $result->get_error_message();
-				$packaging_error =  "Error: $error";
-			}
-			if(file_exists($tempDir)) $wp_filesystem->delete($tempDir,true);
-			if(file_exists($filepath))  $wp_filesystem->delete($filepath,true);
-	
-		}
-
-	
-		if($packagin_success){
-			return wp_json_encode(array('sts'=>200,'msg'=>$packagin_success));
-		}else{
-			return wp_json_encode(array('sts'=>404,'msg'=>$packaging_error));
-		}
-
+		return array('sts'=>404,'msg'=>'Remote installation is not supported in the WordPress.org plugin directory version.');
 	}
 	
 }
@@ -834,85 +857,14 @@ if(!function_exists('it_epoll_install_from_store_zip')){
 if(!function_exists('it_epoll_install_from_local_zip')){
 
 	function it_epoll_install_from_local_zip($upload_dir,$action_upload,$type="template"){
-		
-		global $wp_filesystem;
-		if(!current_user_can('manage_options')) exit(wp_json_encode(array('sts'=>404,'msg'=>'You don\'t have permission to do this!')));
-          
-		if ( ! function_exists( 'wp_handle_upload' ) ) {
-			require_once( ABSPATH . 'wp-admin/includes/file.php' );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
-		$package_type = "Template ";
-		if($type =='addon'){
-			$package_type = "AddOn ";
-		}
-		
 		?>
-			<h3><?php echo esc_attr("$package_type Installation Process....",'it_epoll');?></h3>
+		<div class="error notice is-dismissible">
+			<p><?php esc_html_e( 'Uploading custom add-on or template ZIP files is not supported in this version. Only bundled templates and add-ons included with the plugin can be used.', 'epoll-wp-voting' ); ?></p>
+		</div>
 		<?php
-		$packaging_error = "";
-		$movefile =  wp_handle_upload( $_FILES['zip_file'], array('action' => $action_upload,'test_form'=>false));
-		if ( $movefile && ! isset( $movefile['error'] ) ){
-			?>
-			<p><?php echo esc_attr("$package_type File was successfully uploaded","it_epoll");?></p>
-			<?php
-			$modulesPathDir = $movefile['file'];
-
-			$tempDir = get_temp_dir() . uniqid( time(), false );
-			// Try to unzip the module zip file
-			$result = unzip_file( $modulesPathDir, $tempDir );
-
-			if ( $result === true ){
-				$dirs = glob( "{$tempDir}/*", GLOB_ONLYDIR );
-
-				if ( empty( $dirs ) ){
-					// Nothing to install
-					$packaging_error =  '<p class="error">Archive is empty or does not contain a directory.</p>';
-					
-				}else{
-					$moduleDir = $dirs[0];
-					
-					if ( ! file_exists($moduleDir.'/'.$type.'.php') ){
-						$packaging_error =  "<p class='error'>Invalid. $package_type Zip File</p>";
-						
-					}else{
-						$theme_data = get_file_data($moduleDir.'/'.$type.'.php',array('Id'=>'Id'));
-						if(isset($theme_data['Id'])){
-							// Get module directory name.
-							$moduleDirName = basename( $moduleDir );
-
-							// Fallback to plugin's directory
-							$modulesPath = IT_EPOLL_DIR_PATH.$upload_dir.$moduleDirName;
-							if ( ! is_dir( $modulesPath ) && ! wp_mkdir_p( $modulesPath ) ) :
-								$modulesPath = IT_EPOLL_DIR_PATH.$upload_dir.$moduleDirName;
-							endif;
-
-							// Copy template's files
-							$result = copy_dir( $moduleDir, $modulesPath );
-							?>
-							<div class='updated notice is-dismissible'><p><?php echo esc_attr("$package_type has been Installed, Try to activate and see it in action","it_epoll");?></p></div>
-						<?php
-						}else{
-						
-							$packaging_error =  "<p class='error'>Invalid. $package_type Zip File</p>";
-						}
-					}
-						
-				}
-				
-			}else{
-				$packaging_error =  '<p class="error">Invalid. Zip File</p>';
-			}
-
-		} else {
-			$packaging_error =  '<p class="error">'.$movefile['error'].'</p>';
-		}
-
-		if(file_exists($tempDir)) $wp_filesystem->delete($tempDir,true);
-		if(file_exists($modulesPathDir))  $wp_filesystem->delete($modulesPathDir,true);
-		
-		if($packaging_error){?>
-			<div class="error notice is-dismissible"><?php echo esc_attr($packaging_error,'it_epoll');?></div>
-		<?php }
 	}
 
 }
@@ -968,13 +920,13 @@ if(!function_exists('it_epoll_settings_plugin_link')){
 			/*
 			 * Insert the link at the beginning
 			 */
-			$in = '<a href="admin.php?page=epoll_options">' . __('Settings','it_epoll') . '</a>';
+			$in = '<a href="admin.php?page=epoll_options">' . __('Settings','epoll-wp-voting') . '</a>';
 			array_unshift($links, $in);
 	
 			/*
 			 * Insert at the end
 			 */
-			 $links[] = '<a target="_blank" style="font-weight: bold; color: #FF5722;" href="'.esc_url('https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/','it_epoll').'">'.__('Get ePoll Pro','it_epoll').'</a>';
+			 $links[] = '<a target="_blank" style="font-weight: bold; color: #FF5722;" href="'.esc_url('https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/','epoll-wp-voting').'">'.__('Get ePoll Pro','epoll-wp-voting').'</a>';
 		}
 		return $links;
 	}
@@ -985,3 +937,4 @@ if(!function_exists('it_epoll_admin_ajax_capabilities_check')){
 		if(!current_user_can('manage_options'))   exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'You don\'t have permission to do this!')));
 	}
 }
+// phpcs:enable WordPress.NamingConventions.PrefixAllGlobals

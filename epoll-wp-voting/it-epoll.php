@@ -1,18 +1,23 @@
 <?php
 /*
-Plugin Name: WP Poll Survey & Voting Plugin - ePoll Lite
-Plugin Uri: https://infotheme.net/product/epoll-pro/
-Description: The WP Poll Maker & Voting Plugin is a unique advanced and stylish voting poll system & online contest system designed to integrate voting / poll / survey / election quiz systems into your post, pages and everywhere in website by just a shortcode. Add poll system to your post by placing shortcode or add voting system into your website.
-Author: Poll Maker & Voting Plugin Team (InfoTheme)
+Plugin Name: ePoll – Contest Poll Survey & Voting
+Plugin URI: https://infotheme.net/epoll-pro/
+Description: ePoll is an advanced voting poll system and online contest system designed to integrate voting, polls, surveys, and election quizzes into your posts and pages via shortcode.
+Author: Poll Maker & Voting Team (InfoTheme)
 Author URI: https://www.infotheme.net
-Version: 3.6
-Tags: poll, contest, poll plugin, voting plugin, election plugin, survey plugin, polling, voting, vote, survey, election, contest system, poll system, wp voting, wp poll, user poll, user voting, wp poll, poll, voting system, wp voting
-Text Domain: it_epoll
-Requires PHP: 5.6
+Version: 3.9
+Tags: poll, contest, voting, survey, election, polling, vote, shortcode
+Text Domain: epoll-wp-voting
+Requires at least: 5.0
+Requires PHP: 7.4
 Domain Path: /languages
-Licence: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /*###############################################################
     EPOLL 3.1 Lite (A Complete Event/Contest/Voting System)
@@ -35,7 +40,7 @@ if(!function_exists('it_epoll_activate')){
 				<p style="background: #ffef80;padding: 10px 15px;border: 1px solid #ffc680;">We Found that you are using Our Plugin\'s Another Version, Please Deactivate That Version & than try to re-activate it. 
 				Don\'t worry free plugins data will be automatically migrate into this version. 
 				Thanks!</p>
-			</div>','it_epoll'),'Plugin Activation Error',array('response'=>200,'back_link'=>TRUE));
+			</div>','epoll-wp-voting'),'Plugin Activation Error',array('response'=>200,'back_link'=>TRUE));
 }
 
 /**ACTIVATOR*/
@@ -50,12 +55,12 @@ if(!function_exists('it_epoll_deactivate')){
 /********Constants *********/
 define( 'IT_EPOLL_DIR_PATH', plugin_dir_path( __FILE__ ) ); // Root Plugin Directory Define
 define( 'IT_EPOLL_DIR_URL', plugin_dir_url( __FILE__ ) ); // Root Plugin URI Define
-define( 'IT_EPOLL_VERSION', '3.3'); // Root Plugin Version
-define( 'IT_EPOLL_EXTENSION_STORE_URL', esc_url('https://store.infotheme.net/epoll/plugins/','it_epoll') ); // Root Plugin Directory Define
-define( 'IT_EPOLL_THEME_STORE_URL', esc_url('https://store.infotheme.net/epoll/themes/','it_epoll') ); // Root Plugin Directory Define
-define( 'IT_EPOLL_DOC_STORE_URL', esc_url('https://store.infotheme.net/epoll/doc/','it_epoll') ); // Root Plugin Directory Define
-define( 'IT_EPOLL_THUMBNAIL_CDN_URL', esc_url('https://store.infotheme.net/epoll/thumbnail/','it_epoll') ); // Root Plugin Directory Define
-define( 'IT_EPOLL_DOWNLOAD_URL', esc_url('https://store.infotheme.net/epoll/download/','it_epoll') ); // Root Plugin Directory Define
+define( 'IT_EPOLL_VERSION', '3.9'); // Root Plugin Version
+define( 'IT_EPOLL_EXTENSION_STORE_URL', esc_url('https://store.infotheme.net/epoll/plugins/','epoll-wp-voting') ); // Root Plugin Directory Define
+define( 'IT_EPOLL_THEME_STORE_URL', esc_url('https://store.infotheme.net/epoll/themes/','epoll-wp-voting') ); // Root Plugin Directory Define
+define( 'IT_EPOLL_DOC_STORE_URL', esc_url('https://store.infotheme.net/epoll/doc/','epoll-wp-voting') ); // Root Plugin Directory Define
+define( 'IT_EPOLL_THUMBNAIL_CDN_URL', esc_url('https://store.infotheme.net/epoll/thumbnail/','epoll-wp-voting') ); // Root Plugin Directory Define
+define( 'IT_EPOLL_DOWNLOAD_URL', esc_url('https://store.infotheme.net/epoll/download/','epoll-wp-voting') ); // Root Plugin Directory Define
 
 include_once('core/initial_setup.php');	
 include_once('core/extras.php');		

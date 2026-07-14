@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Adds a box to the main column on the Poll edit screens.
  */
@@ -9,7 +12,7 @@ if(!function_exists('it_epoll_poll_metaboxes')) {
 
 		add_meta_box(
 			'it_epoll_',
-			__( 'Add Voting Poll Options', 'it_epoll' ),
+			__( 'Add Voting Poll Options', 'epoll-wp-voting' ),
 			'it_epoll_poll_metabox_forms',
 			'it_epoll_poll',
 			'normal',
@@ -51,7 +54,6 @@ function it_epoll_poll_metabox_forms( $post ) {
 	$it_epoll_poll_option_cover_img = get_post_meta( $poll_id, 'it_epoll_poll_option_cover_img', true );
 	$it_epoll_poll_option_id = get_post_meta( $poll_id, 'it_epoll_poll_option_id', true );
 	$it_epoll_poll_style = get_post_meta( $poll_id, 'it_epoll_poll_style', true );
-	$it_epoll_poll_ui = get_post_meta( $poll_id, 'it_epoll_poll_ui', true );
 	$it_epoll_poll_vote_total_count = (int)get_post_meta($poll_id, 'it_epoll_vote_total_count',true);
 
 	//Color Scheme
@@ -69,9 +71,10 @@ function it_epoll_poll_metabox_forms( $post ) {
 	if(!$it_epoll_poll_container_text_color) 		$it_epoll_poll_container_text_color = "#ffffff";
 	if(!$it_epoll_poll_button_text_color) 			$it_epoll_poll_button_text_color = "#ffffff";
 	?>
-	<?php if(($post->post_type == 'it_epoll_poll') && isset($_REQUEST['action']) && $_REQUEST['action'] == 'edit'){?>
+	<?php // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- WordPress core post editor screen action.
+	if ( ( $post->post_type == 'it_epoll_poll' ) && isset( $_REQUEST['action'] ) && 'edit' === sanitize_key( wp_unslash( $_REQUEST['action'] ) ) ) { ?>
 		<div class="it_epoll_short_code">
-			<?php echo esc_attr(sprintf('Shortcode for this poll is : <code>[IT_EPOLL_VOTING id="%d"][/IT_EPOLL_VOTING]</code> (Insert it anywhere in your post/page and show your poll)',$post->ID),'it_epoll');?>
+			<?php echo esc_attr(sprintf('Shortcode for this poll is : <code>[IT_EPOLL_VOTING id="%d"][/IT_EPOLL_VOTING]</code> (Insert it anywhere in your post/page and show your poll)',$post->ID),'epoll-wp-voting');?>
 		</div>
 	<?php }?>
 
@@ -80,7 +83,7 @@ function it_epoll_poll_metabox_forms( $post ) {
 	<table class="form-table it_epoll_meta_table">
 		
 	<tr>
-		<td colspan="1"><?php esc_attr_e('Voting Poll Theme / Design','it_epoll');?></td>
+		<td colspan="1"><?php esc_attr_e('Voting Poll Theme / Design','epoll-wp-voting');?></td>
 		<td>
 
 		
@@ -99,9 +102,9 @@ function it_epoll_poll_metabox_forms( $post ) {
 								$theme_id = $theme['Id'];
 								$theme_name = $theme['Name'];
 								?>
-								<option value="<?php echo esc_attr($theme_id,'it_epoll');?>"<?php if($it_epoll_poll_theme == $theme_id) echo esc_attr(' checked','it_epoll');?>><?php echo esc_attr($theme_name,'it_epoll');?></option>
+								<option value="<?php echo esc_attr($theme_id,'epoll-wp-voting');?>"<?php if($it_epoll_poll_theme == $theme_id) echo esc_attr(' checked','epoll-wp-voting');?>><?php echo esc_attr($theme_name,'epoll-wp-voting');?></option>
 							<?php }else{?>
-								<option value="<?php echo esc_attr($theme_id,'it_epoll');?>" disabled><?php echo esc_attr($theme_name,'it_epoll');?></option>
+								<option value="<?php echo esc_attr($theme_id,'epoll-wp-voting');?>" disabled><?php echo esc_attr($theme_name,'epoll-wp-voting');?></option>
 								
 							<?php }
 						}
@@ -109,85 +112,74 @@ function it_epoll_poll_metabox_forms( $post ) {
 					?>	
 			</select>
 		</td>
-		<td><?php esc_attr_e('Social Sharing','it_epoll');?></td>
+		<td><?php esc_attr_e('Social Sharing','epoll-wp-voting');?></td>
 		<td>
 			<select name="it_epoll_social_sharing_opt" id="it_epoll_social_sharing_opt" class="widefat">
-				<option value="1"<?php if($it_epoll_social_sharing_opt == '1') echo esc_attr(' selected','it_epoll');?>><?php esc_attr_e('Yes','it_epoll');?></option>
-				<option value="0"<?php if($it_epoll_social_sharing_opt != '1') echo esc_attr(' selected','it_epoll');?>><?php esc_attr_e('No','it_epoll');?></option>
+				<option value="1"<?php if($it_epoll_social_sharing_opt == '1') echo esc_attr(' selected','epoll-wp-voting');?>><?php esc_attr_e('Yes','epoll-wp-voting');?></option>
+				<option value="0"<?php if($it_epoll_social_sharing_opt != '1') echo esc_attr(' selected','epoll-wp-voting');?>><?php esc_attr_e('No','epoll-wp-voting');?></option>
 			</select>
 		</td>
 	</tr>
 	<tr>
-		<td><?php esc_attr_e('Voting Poll Status','it_epoll');?></td>
+		<td><?php esc_attr_e('Voting Poll Status','epoll-wp-voting');?></td>
 		<td>
 			<select class="widefat" id="it_epoll_poll_status" name="it_epoll_poll_status" value="" required>
-				<option value="live" <?php if($it_epoll_poll_status == 'live') echo esc_attr('selected','it_epoll');?>><?php esc_attr_e('Live','it_epoll');?></option>
-				<option value="end" <?php if($it_epoll_poll_status == 'end') echo esc_attr('selected','it_epoll');?>><?php esc_attr_e('End','it_epoll');?></option>
+				<option value="live" <?php if($it_epoll_poll_status == 'live') echo esc_attr('selected','epoll-wp-voting');?>><?php esc_attr_e('Live','epoll-wp-voting');?></option>
+				<option value="upcoming" <?php if($it_epoll_poll_status == 'upcoming') echo esc_attr('selected','epoll-wp-voting');?>><?php esc_attr_e('Upcoming','epoll-wp-voting');?></option>
+				<option value="end" <?php if($it_epoll_poll_status == 'end') echo esc_attr('selected','epoll-wp-voting');?>><?php esc_attr_e('End','epoll-wp-voting');?></option>
 			</select>
 		</td>
-		<td><?php esc_attr_e('Enable OTP Voting','it_epoll');?>
-			<span class="it_epolladmin_pro_badge" style="top: 2px; position: relative;"><i class="dashicons dashicons-star-empty"></i> <?php esc_attr_e('Premium Only','it_epoll');?></span></td>
-		<td>	
-			<select class="widefat" id="it_epoll_poll_ui" name="it_epoll_poll_ui"  disabled>
-				<option><?php esc_attr_e('No','it_epoll');?></option>
-				<option><?php esc_attr_e('Yes','it_epoll');?></option>
-			</select>
-		</td>
-		</tr>
-		<tr>
-		<td><?php esc_attr_e('Voting Poll Style','it_epoll');?></td>
+		<td><?php esc_attr_e('Multi Voting ','epoll-wp-voting');?></td>
 		<td>
-
+			<select name="it_epoll_poll_multichoice" class="widefat">
+				<option value="0"<?php if ( ! get_post_meta( $poll_id, 'it_epoll_poll_multichoice', true ) ) echo esc_attr( ' selected', 'epoll-wp-voting' ); ?>><?php esc_attr_e('No','epoll-wp-voting');?></option>
+				<option value="1"<?php if ( get_post_meta( $poll_id, 'it_epoll_poll_multichoice', true ) ) echo esc_attr( ' selected', 'epoll-wp-voting' ); ?>><?php esc_attr_e('Yes','epoll-wp-voting');?></option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td><?php esc_attr_e('Voting Poll Style','epoll-wp-voting');?></td>
+		<td colspan="3">
 			<select class="widefat" id="it_epoll_poll_style" name="it_epoll_poll_style" value="" required>
-				<option value="grid" <?php if($it_epoll_poll_style == 'grid') echo esc_attr('selected','it_epoll');?>><?php esc_attr_e('Grid','it_epoll');?></option>
-				<option value="list" <?php if($it_epoll_poll_style == 'list') echo esc_attr('selected','it_epoll');?>><?php esc_attr_e('List','it_epoll');?></option>
+				<option value="grid" <?php if($it_epoll_poll_style == 'grid') echo esc_attr('selected','epoll-wp-voting');?>><?php esc_attr_e('Grid','epoll-wp-voting');?></option>
+				<option value="list" <?php if($it_epoll_poll_style == 'list') echo esc_attr('selected','epoll-wp-voting');?>><?php esc_attr_e('List','epoll-wp-voting');?></option>
 			</select>
 		</td>
-		<td><?php esc_attr_e('Multi Voting ','it_epoll');?>
-		<span class="it_epolladmin_pro_badge" style="top: 2px; position: relative;"><i class="dashicons dashicons-star-empty"></i> <?php esc_attr_e('Premium Only','it_epoll');?></span></td>
-			<td>
-			<select name="it_epoll_multivoting" class="widefat" disabled="">
-				<option><?php esc_attr_e('No','it_epoll');?></option>
-				<option><?php esc_attr_e('Yes','it_epoll');?></option>
-			</select>
-		</td>
-		</tr>
+	</tr>
 	</table>
 	
 	<table class="form-table">
                 <thead>
                     <tr>
                         <th colspan="4">
-                                <label><?php esc_attr_e('Contest Color Scheme','it_epoll');?> </label>
-								<span class="it_epolladmin_pro_badge" style="top: 2px; position: relative;"><i class="dashicons dashicons-star-empty"></i> <?php esc_attr_e('Premium Only','it_epoll');?></span></td>
-		
+                                <label><?php esc_attr_e('Contest Color Scheme','epoll-wp-voting');?> </label>
 							</th>
                         </tr>
                 </thead>
                     <tbody>
                     <tr>
-                        <td><?php esc_attr_e('Container Background Color','it_epoll');?></td>
+                        <td><?php esc_attr_e('Container Background Color','epoll-wp-voting');?></td>
 						<td>
-                            <input type="text" disabled class="widefat it_epoll_color-field" name="it_epoll_poll_container_color_primary" value="<?php echo esc_attr($it_epoll_poll_container_color_primary,'it_epoll');?>"/>
-							<input type="text" disabled class="widefat it_epoll_color-field" name="it_epoll_poll_container_color_secondary" value="<?php echo esc_attr($it_epoll_poll_container_color_secondary,'it_epoll');?>"/>
+                            <input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_container_color_primary" value="<?php echo esc_attr($it_epoll_poll_container_color_primary,'epoll-wp-voting');?>"/>
+							<input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_container_color_secondary" value="<?php echo esc_attr($it_epoll_poll_container_color_secondary,'epoll-wp-voting');?>"/>
                            
 						</td>
-                        <td><?php esc_attr_e('Button Background Color','it_epoll');?></td>
+                        <td><?php esc_attr_e('Button Background Color','epoll-wp-voting');?></td>
                         <td>
-                            <input type="text" readonly class="widefat it_epoll_color-field" name="it_epoll_poll_button_color_primary" value="<?php echo esc_attr($it_epoll_poll_button_color_primary,'it_epoll');?>"/>
-                            <input type="text" readonly class="widefat it_epoll_color-field" name="it_epoll_poll_button_color_secondary" value="<?php echo esc_attr($it_epoll_poll_button_color_secondary,'it_epoll');?>"/>
+                            <input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_button_color_primary" value="<?php echo esc_attr($it_epoll_poll_button_color_primary,'epoll-wp-voting');?>"/>
+                            <input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_button_color_secondary" value="<?php echo esc_attr($it_epoll_poll_button_color_secondary,'epoll-wp-voting');?>"/>
                            
 						</td>
 						
                     </tr>
 					<tr>
-                        <td><?php esc_attr_e('Contest Title Color','it_epoll');?></td>
+                        <td><?php esc_attr_e('Contest Title Color','epoll-wp-voting');?></td>
 						<td>
-                            <input type="text" readonly class="widefat it_epoll_color-field" name="it_epoll_poll_container_text_color" value="<?php echo esc_attr($it_epoll_poll_container_text_color,'it_epoll');?>"/>
+                            <input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_container_text_color" value="<?php echo esc_attr($it_epoll_poll_container_text_color,'epoll-wp-voting');?>"/>
                         </td>
-                        <td><?php esc_attr_e('Button Text Color','it_epoll');?></td>
+                        <td><?php esc_attr_e('Button Text Color','epoll-wp-voting');?></td>
                         <td>
-                            <input type="text" readonly class="widefat it_epoll_color-field" name="it_epoll_poll_button_text_color" value="<?php echo esc_attr($it_epoll_poll_button_text_color,'it_epoll');?>"/>
+                            <input type="text" class="widefat it_epoll_color-field" name="it_epoll_poll_button_text_color" value="<?php echo esc_attr($it_epoll_poll_button_text_color,'epoll-wp-voting');?>"/>
                         </td>
 						<td colspan="2"></td>
                     </tr>
@@ -212,32 +204,31 @@ function it_epoll_poll_metabox_forms( $post ) {
 		<td>
 			<table class="form-table">
 				<tr>
-					<td><?php esc_attr_e('Candidate Name','it_epoll');?></td>
+					<td><?php esc_attr_e('Candidate Name','epoll-wp-voting');?></td>
 					<td>
-						<input type="text" class="widefat" id="it_epoll_poll_option" name="it_epoll_poll_option[]" value="<?php echo esc_attr($it_epoll_poll_opt,'it_epoll');?>" required/>
+						<input type="text" class="widefat" id="it_epoll_poll_option" name="it_epoll_poll_option[]" value="<?php echo esc_attr($it_epoll_poll_opt,'epoll-wp-voting');?>" required/>
 					</td>
 				</tr>
 				<tr>
-					<td><?php esc_attr_e('Candidate Image/Photo','it_epoll');?></td>
-					<td><input type="url" class="widefat" id="it_epoll_poll_option_img" name="it_epoll_poll_option_img[]" value="<?php if(!empty($it_epoll_poll_option_img)){ echo esc_attr($it_epoll_poll_option_img[$i],'it_epoll');}?>"/>
-						<input type="hidden" name="it_epoll_poll_option_id[]" id="it_epoll_poll_option_id" value="<?php echo esc_attr($it_epoll_poll_option_id[$i],'it_epoll');?>"/>
+					<td><?php esc_attr_e('Candidate Image/Photo','epoll-wp-voting');?></td>
+					<td><input type="url" class="widefat" id="it_epoll_poll_option_img" name="it_epoll_poll_option_img[]" value="<?php if(!empty($it_epoll_poll_option_img)){ echo esc_attr($it_epoll_poll_option_img[$i],'epoll-wp-voting');}?>"/>
+						<input type="hidden" name="it_epoll_poll_option_id[]" id="it_epoll_poll_option_id" value="<?php echo esc_attr($it_epoll_poll_option_id[$i],'epoll-wp-voting');?>"/>
 					</td>
 					<td>
-						<input type="button" class="button" id="it_epoll_poll_option_btn" name="it_epoll_poll_option_btn" value="<?php esc_attr_e('Upload','it_epoll');?>">
+						<input type="button" class="button" id="it_epoll_poll_option_btn" name="it_epoll_poll_option_btn" value="<?php esc_attr_e('Upload','epoll-wp-voting');?>">
 					</td>
 				</tr>
 				<tr>
-					<td><?php esc_attr_e('Candidate Cover Image/Photo','it_epoll');?></td>
-					<td><input type="url" class="widefat" id="it_epoll_poll_option_cover_img" name="it_epoll_poll_option_cover_img[]" value="<?php if(!empty($it_epoll_poll_option_cover_img)){ echo esc_attr($it_epoll_poll_option_cover_img[$i],'it_epoll');}?>"/>
+					<td><?php esc_attr_e('Candidate Cover Image/Photo','epoll-wp-voting');?></td>
+					<td><input type="url" class="widefat" id="it_epoll_poll_option_cover_img" name="it_epoll_poll_option_cover_img[]" value="<?php if(!empty($it_epoll_poll_option_cover_img)){ echo esc_attr($it_epoll_poll_option_cover_img[$i],'epoll-wp-voting');}?>"/>
 					</td>
 					<td>
-						<input type="button" class="button" id="it_epoll_poll_option_ci_btn" name="it_epoll_poll_option_ci_btn" value="<?php esc_attr_e('Upload','it_epoll');?>">
+						<input type="button" class="button" id="it_epoll_poll_option_ci_btn" name="it_epoll_poll_option_ci_btn" value="<?php esc_attr_e('Upload','epoll-wp-voting');?>">
 					</td>
 				</tr>
 				<tr>
-					<td><?php esc_attr_e('Edit Vote Count / Result','it_epoll');?> 
-		<span class="it_epolladmin_pro_badge" style="top: 2px; position: relative;"><i class="dashicons dashicons-star-empty"></i> <?php esc_attr_e('Premium Only','it_epoll');?></span></td>
-					<td><input type="number" class="widefat" id="it_epoll_indi_vote" name="it_epoll_indi_vote[]" value="<?php echo esc_attr($it_epoll_poll_vote_count,'it_epoll');?>" disabled=""/>
+					<td><?php esc_attr_e('Edit Vote Count / Result','epoll-wp-voting');?></td>
+					<td><input type="number" min="0" class="widefat" id="it_epoll_indi_vote" name="it_epoll_indi_vote[]" value="<?php echo esc_attr($it_epoll_poll_vote_count,'epoll-wp-voting');?>"/>
 					</td>
 				</tr>
 				<?php do_action('it_epoll_poll_option_meta_ui_option_fields',array('option_index'=>$i,'poll_id'=>$poll_id)); // add extra fields here ?>
@@ -257,18 +248,18 @@ function it_epoll_poll_metabox_forms( $post ) {
 	
 	<table class="form-table">
 		<tr>
-			<td><button type="button" name="it_epoll_form_add_option_btn" class="button it_epoll_add_option_btn" id="it_epoll_add_option_btn"><i class="dashicons-before dashicons-plus-alt"></i> <?php esc_attr_e('Add Option','it_epoll');?></button></td>
+			<td><button type="button" name="it_epoll_form_add_option_btn" class="button it_epoll_add_option_btn" id="it_epoll_add_option_btn"><i class="dashicons-before dashicons-plus-alt"></i> <?php esc_attr_e('Add Option','epoll-wp-voting');?></button></td>
 		</tr>
 	</table>
 	
 	<table class="form-table">
 		<tr>
 			<td class="it_epoll_short_code">
-			<?php esc_attr_e('Developed & Designed By','it_epoll');?>
-				<a href="<?php echo esc_url('https://www.infotheme.in','it_epoll');?>"><?php esc_attr_e('InfoTheme Inc.','it_epoll');?></a> 
-				| <?php esc_attr_e('For Customization ','it_epoll');?><a href="<?php echo esc_url('https://infotheme.in/#contact','it_epoll');?>"><?php esc_attr_e('Hire Us Today','it_epoll');?></a>
-				| <a href="<?php echo esc_url('http://infotheme.in/products/plugins/epoll-wp-voting-system/#forum','it_epoll');?>"><?php esc_attr_e('Support / Live Chat','it_epoll');?></a> 
-				| <a href="<?php echo esc_url('http://infotheme.in/products/plugins/epoll-wp-voting-system/#docs','it_epoll');?>"><?php esc_attr_e('Documentation','it_epoll');?></a>
+			<?php esc_attr_e('Developed & Designed By','epoll-wp-voting');?>
+				<a href="<?php echo esc_url('https://www.infotheme.in','epoll-wp-voting');?>"><?php esc_attr_e('InfoTheme Inc.','epoll-wp-voting');?></a> 
+				| <?php esc_attr_e('For Customization ','epoll-wp-voting');?><a href="<?php echo esc_url('https://infotheme.in/#contact','epoll-wp-voting');?>"><?php esc_attr_e('Hire Us Today','epoll-wp-voting');?></a>
+				| <a href="<?php echo esc_url('http://infotheme.in/products/plugins/epoll-wp-voting-system/#forum','epoll-wp-voting');?>"><?php esc_attr_e('Support / Live Chat','epoll-wp-voting');?></a> 
+				| <a href="<?php echo esc_url('http://infotheme.in/products/plugins/epoll-wp-voting-system/#docs','epoll-wp-voting');?>"><?php esc_attr_e('Documentation','epoll-wp-voting');?></a>
 		
 			</td>
 		</tr>
@@ -298,7 +289,7 @@ function it_epoll_poll_save_options( $post_id ) {
 	}
 
 	// Verify that the nonce is valid.
-	if ( ! wp_verify_nonce( $_POST['it_epoll_poll_metabox_id_nonce'], 'it_epoll_poll_metabox_id' ) ) {
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_metabox_id_nonce'] ) ), 'it_epoll_poll_metabox_id' ) ) {
 		return;
 	}
 
@@ -326,39 +317,55 @@ function it_epoll_poll_save_options( $post_id ) {
 	
 	//Updating Poll status
 	if(isset($_POST['it_epoll_poll_status'])){
-		$it_epoll_poll_status =  sanitize_text_field($_POST['it_epoll_poll_status']);
+		$it_epoll_poll_status =  sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_status'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_status', $it_epoll_poll_status );
 	}
 
 	//Updating Poll theme
 	if(isset($_POST['it_epoll_poll_theme'])){
-		$it_epoll_poll_theme =  sanitize_text_field($_POST['it_epoll_poll_theme']);
+		$it_epoll_poll_theme =  sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_theme'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_theme', $it_epoll_poll_theme );
 	}
 
 	//Updating Poll UI
 	if(isset($_POST['it_epoll_poll_ui'])){
-		$it_epoll_poll_ui =  sanitize_text_field($_POST['it_epoll_poll_ui']);
+		$it_epoll_poll_ui =  sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_ui'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_ui', $it_epoll_poll_ui );
 	}
 
 	//Updating Poll Style
 	if(isset($_POST['it_epoll_poll_style'])){
-		$it_epoll_poll_style =  sanitize_text_field($_POST['it_epoll_poll_style']);
+		$it_epoll_poll_style =  sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_style'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_style', $it_epoll_poll_style );
 	}
 
 
 	//Updating Poll Container Primary Color
 	if(isset($_POST['it_epoll_poll_container_color_primary'])){
-		$it_epoll_poll_container_color_primary =  sanitize_text_field($_POST['it_epoll_poll_container_color_primary']);
+		$it_epoll_poll_container_color_primary =  sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_container_color_primary'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_container_color_primary', $it_epoll_poll_container_color_primary );
+	}
+
+	if(isset($_POST['it_epoll_poll_container_color_secondary'])){
+		update_post_meta( $post_id, 'it_epoll_poll_container_color_secondary', sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_container_color_secondary'] ) ) );
+	}
+	if(isset($_POST['it_epoll_poll_button_color_primary'])){
+		update_post_meta( $post_id, 'it_epoll_poll_button_color_primary', sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_button_color_primary'] ) ) );
+	}
+	if(isset($_POST['it_epoll_poll_button_color_secondary'])){
+		update_post_meta( $post_id, 'it_epoll_poll_button_color_secondary', sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_button_color_secondary'] ) ) );
+	}
+	if(isset($_POST['it_epoll_poll_container_text_color'])){
+		update_post_meta( $post_id, 'it_epoll_poll_container_text_color', sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_container_text_color'] ) ) );
+	}
+	if(isset($_POST['it_epoll_poll_button_text_color'])){
+		update_post_meta( $post_id, 'it_epoll_poll_button_text_color', sanitize_text_field( wp_unslash( $_POST['it_epoll_poll_button_text_color'] ) ) );
 	}
 
 	   
 	//Updating Poll Social Sharing
 	if(isset($_POST['it_epoll_social_sharing_opt'])){
-		$it_epoll_social_sharing_opt =  sanitize_text_field($_POST['it_epoll_social_sharing_opt']);
+		$it_epoll_social_sharing_opt =  sanitize_text_field( wp_unslash( $_POST['it_epoll_social_sharing_opt'] ) );
 		update_post_meta( $post_id, 'it_epoll_social_sharing_opt', $it_epoll_social_sharing_opt );
 	}
 
@@ -366,7 +373,7 @@ function it_epoll_poll_save_options( $post_id ) {
 	//Update Poll Options Name
 	if(isset($_POST['it_epoll_poll_option'])){
 		$it_epoll_poll_option = array();
-		$it_epoll_poll_option = array_map('sanitize_text_field', $_POST['it_epoll_poll_option'] );
+		$it_epoll_poll_option = array_map( 'sanitize_text_field', wp_unslash( $_POST['it_epoll_poll_option'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_option', $it_epoll_poll_option);
 	}else{
 		update_post_meta( $post_id, 'it_epoll_poll_option', array());
@@ -377,26 +384,26 @@ function it_epoll_poll_save_options( $post_id ) {
 	
 	//Update Poll Options Image
 	if(isset($_POST['it_epoll_poll_option_img'])){
-		$it_epoll_poll_option_img = array_map('sanitize_text_field', $_POST['it_epoll_poll_option_img']);
+		$it_epoll_poll_option_img = array_map( 'sanitize_text_field', wp_unslash( $_POST['it_epoll_poll_option_img'] ) );
 		update_post_meta( $post_id, 'it_epoll_poll_option_img', $it_epoll_poll_option_img );
 	}
 
 	//Update Poll Options Cover
 	if(isset($_POST['it_epoll_poll_option_cover_img'])){
 		
-		$it_epoll_poll_option_cover_img = array_map('sanitize_text_field', $_POST['it_epoll_poll_option_cover_img']);
+		$it_epoll_poll_option_cover_img = array_map( 'sanitize_text_field', wp_unslash( $_POST['it_epoll_poll_option_cover_img'] ) );
 		
 		update_post_meta( $post_id, 'it_epoll_poll_option_cover_img', $it_epoll_poll_option_cover_img );
 	}
 	
 	//Update Poll Options Id
 	if(isset($_POST['it_epoll_poll_option_id'])){
-		$it_epoll_poll_option_id = array_map('sanitize_text_field', $_POST['it_epoll_poll_option_id']);
+		$it_epoll_poll_option_id = array_map( 'sanitize_text_field', wp_unslash( $_POST['it_epoll_poll_option_id'] ) );
 		
 		update_post_meta( $post_id, 'it_epoll_poll_option_id', $it_epoll_poll_option_id );
 	}
 
-	do_action('it_epoll_poll_option_meta_save',array('posted_fields'=>$_POST,'poll_id'=>$post_id));
+	do_action('it_epoll_poll_option_meta_save', array('poll_id'=>$post_id));
 }
 add_action( 'save_post', 'it_epoll_poll_save_options' );
 }

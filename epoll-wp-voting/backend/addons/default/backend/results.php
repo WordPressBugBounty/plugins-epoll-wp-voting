@@ -1,4 +1,7 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if(!function_exists('it_epoll_default_view_reports')){
    
     add_action('it_epoll_results_view_detailed_reports','it_epoll_default_view_reports');

@@ -1,4 +1,7 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /***************
  * Author: Rahul Negi
  * Team: InfoTheme
@@ -16,7 +19,7 @@ function ajax_it_epoll_vote() {
 	{
 		$wp_nonce ='';
 		if(isset($_POST['wp_nonce'])){
-			$wp_nonce = sanitize_text_field($_POST['wp_nonce']);
+			$wp_nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) );
 		}
 		//Wp Nonce Security Check
 		if ( ! wp_verify_nonce( $wp_nonce, 'it_epoll_poll' ) ){
@@ -26,16 +29,16 @@ function ajax_it_epoll_vote() {
 		it_epoll_init_unique_vote_session();
 
 		if(isset($_POST['poll_id'])){
-		$poll_id = intval(sanitize_text_field($_POST['poll_id']));
+		$poll_id = intval( sanitize_text_field( wp_unslash( $_POST['poll_id'] ) ) );
 		}
 
 		if(isset($_POST['option_id'])){
-		$option_id = sanitize_text_field($_POST['option_id']);
+		$option_id = sanitize_text_field( wp_unslash( $_POST['option_id'] ) );
 		}
 		
 		$fingerprint ='';
 		if(isset($_POST['fingerprint'])){
-			$fingerprint = sanitize_text_field($_POST['fingerprint']);
+			$fingerprint = sanitize_text_field( wp_unslash( $_POST['fingerprint'] ) );
 		}
 		
 		//Validate Poll ID
@@ -59,14 +62,15 @@ function ajax_it_epoll_vote() {
 			do_action('it_epoll_make_contest_voting_action', array('poll_id'=>$poll_id, 'option_id'=>$option_id,'data'=>array(),'fingerprint'=>$fingerprint));
 		}else{
 			it_epoll_generate_unique_vote_session('it_epoll_session',$poll_id);
-			die(wp_json_encode(array("voting_status"=>"error","msg"=>__('You Already Voted For This Candidate!','it_epoll'))));
+			die(wp_json_encode(array("voting_status"=>"error","msg"=>__('You Already Voted For This Candidate!','epoll-wp-voting'))));
 		}
 
 	}else{
 		$outputdata['voting_status'] = "error";
-		$outputdata['msg'] = __('Something Went Wrong','it_epoll');
+		$outputdata['msg'] = __('Something Went Wrong','epoll-wp-voting');
 		it_epoll_generate_unique_vote_session('it_epoll_session');
-		print_r(wp_json_encode($outputdata));
+		echo wp_json_encode( $outputdata );
+		exit;
 	}
 	die();
 }
@@ -110,7 +114,7 @@ if(!function_exists('it_epoll_addon_default_contest_vote_action')){
 					$it_epoll_poll_vote_percentage =0;
 					if($it_epoll_poll_vote_count == 0){
 					$it_epoll_poll_vote_percentage =0;
-					$it_epoll_poll_vote_count_text = __("No Vote",'it_epoll'); 
+					$it_epoll_poll_vote_count_text = __("No Vote",'epoll-wp-voting'); 
 					}elseif($it_epoll_poll_vote_count == 1){
 						$it_epoll_poll_vote_count_text = sprintf(it_epoll_poll_get_ttext('it_epoll_settings_vote_number_text'),$it_epoll_poll_vote_count);
 						$it_epoll_poll_vote_percentage = (int)$it_epoll_poll_vote_count*100/$it_epoll_poll_vote_total_count; 
@@ -149,7 +153,7 @@ if(!function_exists('it_epoll_addon_default_contest_vote_action')){
 		$args['status'] = 0;
 		it_epoll_saveIPBasedData($args);
 		
-		print_r(wp_json_encode($outputdata));
+		echo wp_json_encode( $outputdata );
 		exit;
 	}
 }

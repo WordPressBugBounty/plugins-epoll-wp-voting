@@ -691,3 +691,269 @@ flex:1;
 .it_epoll_admin_box_content .it_epoll_admin_box_item .it_epoll_admin_box_item_link_partial{
     flex: 1 0 46% !important;
 }
+
+/* Upgrade page — plans, highlights, feature matrix */
+.it_epoll-upgrade-wrap .it_epoll-plan-cards {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0 28px;
+    flex-wrap: wrap;
+    max-width: 960px;
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-card {
+    flex: 1;
+    min-width: 260px;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-card h2 {
+    margin-top: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-card-pro {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #e8f0f8;
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-price {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 8px 0 12px;
+    color: #1d2327;
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-includes {
+    margin: 16px 0 0;
+    padding-left: 18px;
+    color: #50575e;
+}
+.it_epoll-upgrade-wrap .it_epoll-plan-includes li {
+    margin-bottom: 6px;
+}
+.it_epoll-upgrade-wrap .it_epoll-highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 16px 0 32px;
+    max-width: 960px;
+}
+.it_epoll-upgrade-wrap .it_epoll-highlight-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-left: 4px solid #2271b1;
+    border-radius: 8px;
+    padding: 18px 20px;
+}
+.it_epoll-upgrade-wrap .it_epoll-highlight-icon {
+    color: #2271b1;
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 8px;
+}
+.it_epoll-upgrade-wrap .it_epoll-highlight-card h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.it_epoll-upgrade-wrap .it_epoll-highlight-card p {
+    margin: 0;
+    color: #50575e;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.it_epoll-upgrade-wrap .it_epoll-pricing-table {
+    max-width: 960px;
+    margin-top: 12px;
+}
+.it_epoll-upgrade-wrap .it_epoll-pricing-table th,
+.it_epoll-upgrade-wrap .it_epoll-pricing-table td {
+    text-align: center;
+    padding: 12px 14px;
+    vertical-align: middle;
+}
+.it_epoll-upgrade-wrap .it_epoll-pricing-table td:first-child,
+.it_epoll-upgrade-wrap .it_epoll-pricing-table th:first-child {
+    text-align: left;
+}
+.it_epoll-upgrade-wrap .it_epoll-col-free,
+.it_epoll-upgrade-wrap .it_epoll-col-pro {
+    width: 110px;
+    text-align: center;
+}
+.it_epoll-upgrade-wrap .it_epoll-feature-group th {
+    background: #f6f7f7;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: left;
+    padding: 10px 14px;
+}
+.it_epoll-upgrade-wrap .it_epoll-feature-highlight td:first-child {
+    font-weight: 600;
+}
+.it_epoll-upgrade-wrap .it_epoll-check {
+    color: #00a32a;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+}
+.it_epoll-upgrade-wrap .it_epoll-check-pro {
+    color: #2271b1;
+}
+.it_epoll-upgrade-wrap .it_epoll-dash {
+    color: #a7aaad;
+    font-size: 16px;
+}
+.it_epoll-upgrade-wrap .it_epoll-upgrade-cta {
+    margin-top: 28px;
+    padding: 24px;
+    max-width: 960px;
+    background: #f0f6fc;
+    border: 1px solid #c3c4c7;
+    border-radius: 10px;
+}
+.it_epoll-upgrade-wrap .it_epoll-upgrade-cta h3 {
+    margin-top: 0;
+}
+.it_epoll-upgrade-wrap .it_epoll-upgrade-cta p:last-child {
+    margin-bottom: 0;
+}
+.it_epoll-upgrade-wrap .it_epoll-upgrade-cta .button {
+    margin-right: 8px;
+    margin-top: 4px;
+}
+
+/* Options — Pro Features tab overlay & modal */
+.epoll_admin_options-tabs-content#pro {
+    padding: 0;
+}
+
+.it_epoll-pro-tab-link .it_epolladmin_pro_badge {
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.it_epoll-pro-features-panel {
+    position: relative;
+    min-height: 420px;
+}
+
+.it_epoll-pro-features-content {
+    padding: 20px;
+    filter: blur(0.2px);
+    opacity: 0.70;
+    pointer-events: none;
+    user-select: none;
+}
+
+.it_epoll-pro-features-intro {
+    margin-top: 0;
+}
+
+.it_epoll-pro-feature-group {
+    margin-bottom: 16px;
+}
+
+.it_epoll-pro-features-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.it_epoll-pro-features-overlay.is-visible {
+    display: flex;
+}
+
+.it_epoll-pro-upgrade-modal {
+    position: relative;
+    width: min(480px, calc(100% - 40px));
+    max-height: calc(100% - 40px);
+    overflow: auto;
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    padding: 28px 28px 24px;
+    text-align: center;
+    cursor: default;
+}
+
+.it_epoll-pro-upgrade-modal.is-hidden {
+    display: none;
+}
+
+.it_epoll-pro-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    border: 0;
+    background: transparent;
+    color: #646970;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    font-size: 20px;
+    line-height: 28px;
+    padding: 0;
+}
+
+.it_epoll-pro-modal-close:hover {
+    color: #1d2327;
+}
+
+.it_epoll-pro-modal-icon {
+    font-size: 42px;
+    width: 42px;
+    height: 42px;
+    color: #2271b1;
+    margin-bottom: 8px;
+}
+
+.it_epoll-pro-upgrade-modal h2 {
+    margin: 0 0 12px;
+    font-size: 1.35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.it_epoll-pro-upgrade-modal > p {
+    color: #50575e;
+    margin: 0 0 16px;
+    line-height: 1.5;
+}
+
+.it_epoll-pro-modal-features {
+    text-align: left;
+    margin: 0 auto 20px;
+    padding-left: 20px;
+    max-width: 360px;
+    color: #1d2327;
+}
+
+.it_epoll-pro-modal-features li {
+    margin-bottom: 6px;
+}
+
+.it_epoll-pro-modal-actions {
+    margin-bottom: 0 !important;
+}
+
+.it_epoll-pro-modal-actions .button {
+    margin: 4px 6px;
+}

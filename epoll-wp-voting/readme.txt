@@ -1,20 +1,22 @@
-=== ePoll - Best WordPress Voting Plugin for Poll & Contest ===
-Contributors: infothemecom
-Donate link: https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/
-Tags: WordPress Poll, voting, poll, contest, voting plugin
+=== ePoll – Contest Poll Survey & Voting ===
+Contributors: infothemecom, omkritindia, infotheme.com
+Donate link: https://infotheme.net/epoll-pro/
+Tags: poll, voting, contest, survey, election
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 3.6
+Tested up to: 7.0
+Stable tag: 3.9
 Requires PHP: 7.4
-License: GPLv2 or Later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-ePoll is a FREE WordPress poll & voting plugin for creating customizable, responsive poll online election voting contest & survey with image & video on your website.
+ePoll is a free poll and voting tool. Create custom, responsive online elections, contests, and surveys with images and videos on your site.
 
 == Description ==
 
+ePoll helps you create polls and conduct voting contests or online elections easily. This feature-rich tool comes with multiple templates and add-ons that make it easier to create responsive and customizable polls and contests. This feature-rich Poll plugin comes with over 100+ features, multiple templates and add-ons that make it easier to create responsive and customizable polls and contests. This Poll & Voting plugin comes with advanced technology like (IP-based voting, VPN detection, device detection with Pro Version) and cookies etc. This Poll plugin ensures the integrity of your voting process and prevents any manipulation in votings. The Poll plugin offers a seamless user experience with its In-List and Grid style user interface. You can embed the poll or voting contest to any page or post using its shortcode.
 
-### WordPress Voting & Poll Plugin 
+
+### Voting & Poll Plugin 
 
 * [WordPress Poll plugin demo](https://infotheme.in/plugins/epoll/v3.1/demo/)
 * [Poll Voting Contest Demo](https://infotheme.in/plugins/epoll/v3.1/demo/all-voting-contests/)
@@ -25,40 +27,27 @@ ePoll is a FREE WordPress poll & voting plugin for creating customizable, respon
 
 https://www.youtube.com/watch?v=ou-buaC1XYg&t=26s
 
-[WordPress Poll plugin & Voting plugin](https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/) is a powerfull tool helps to create awesome polls and conduct voting contest or online elections easily. This feature-rich Poll plugin comes with over 100+ features, multiple templates and add-ons that make it easier to create responsive and customizable polls and contests. This Poll & Voting plugin comes with advanced technology like IP-based voting, VPN detection, cookies, and device detection etc. This Poll plugin ensures the integrity of your voting process and prevents any manipulation in votings. The Poll plugin offers a seamless user experience with its In-List and Grid style user interface. You can embed the poll or voting contest to any page or post using its shortcode.
 
-> <strong>Poll shortcode</strong><br>
-> <strong>[IT_EPOLL_VOTING id="Your_Contest_ID" type="list/grid"][/IT_EPOLL_VOTING]</strong>
-> <strong>Voting Contest shortcode</strong><br>
-> <strong>[IT_EPOLL_POLL id="Your_Poll_ID" type="list/grid"][/IT_EPOLL_POLL]</strong>
+> **Poll shortcode**
+> **[IT_EPOLL_VOTING id="Your_Contest_ID" type="list/grid"][/IT_EPOLL_VOTING]**
+> **Voting Contest shortcode**
+> **[IT_EPOLL_POLL id="Your_Poll_ID" type="list/grid"][/IT_EPOLL_POLL]**
 
 **Features**
 
-* Create Poll and Voting Contest both by this single plugin.
-* Comes with Templates & Addon System which provides 40+ features to make voting more interesting. 
-* You can use shortcode to place poll / election voting contest anywhere in your page or posts.
-* Easy to use interface of poll maker & contest maker to create contest or poll in few seconds.
-* In-List Style & Grid View to show voting contest.
-* Schedule Voting End time on both poll / contest.
-* Customize colors according your website theme or colors in your poll.
-* Voting Access Code features to make your poll / voting private
-* Cookies & Browser session voting restrictions.
-* hCaptcha to prevent bots and spammers from voting to polls.
-* Easy interface to view & export voting results/reports.
-* Control result visibility : feature to hide/show result on frontend of your poll or contest.
-* Allow comments on voting to get voters response.
-* Social Sharing on poll & contest : ability to share with others via Facebook, Twitter & WhatsApp
-* Add Contestent Photos into voting contest.
-* Add Cover Image over contest photos on your poll & voting contest.
-* Easy to place shortcode now having more options 
-* Shortcode to place Voting Contest **[IT_EPOLL_VOTING id="Your Poll ID" type="list/grid"][/IT_EPOLL_VOTING]** 
-* Shortcode to place Poll **[IT_EPOLL_POLL id="Your Poll ID" type="list/grid"][/IT_EPOLL_POLL]**
-* Localization : Change poll / contest text as per your local language.
-* One click duplicator to duplicate your poll/contest which will save your time to create every time new.
-* Google Analytics integration to track voters voting event.
-* Unlimited Options / Candidates can be added to both poll or contest.
-* In dashboard How to Guide, Support Ticket, New Addons & Themes Update, FAQ's System.
-* This is a #1 WordPress Poll plugin & Voting plugin.
+* Create polls and voting contests from a single tool.
+* Templates and add-on system with many customization options.
+* Shortcodes to place polls and contests anywhere on your site.
+* In-list and grid views for voting contests.
+* Schedule voting end times.
+* Customize colors to match your site.
+* Voting access codes for private polls.
+* Cookie and browser session voting restrictions.
+* hCaptcha support to help prevent bot voting (when configured).
+* View and export voting results.
+* Control result visibility on the frontend.
+* Social sharing via Facebook, Twitter, and WhatsApp.
+* Localization support.
 
 **[Poll plugin PRO](https://infotheme.net/item/wordpress/plugin/poll-maker-and-voting-plugin/) Features**
 
@@ -67,7 +56,7 @@ https://www.youtube.com/watch?v=ou-buaC1XYg&t=26s
 * Cookies and device detection to prevent multiple voting from the same device.
 * One-Time Password (OTP) based voting through email, SMS, or WhatsApp for added security.
 * Responsive and customizable templates for visually appealing polls.
-* Easy embedding with shortcodes for seamless integration into your content.
+* Easy embedding with Shortcodes for seamless integration into your content.
 * Voter data collection through a form builder for user information collection.
 * Pay per vote or pay per voting slab feature for monetization through payment gateways.
 * Live voting with real-time results for an engaging experience.
@@ -77,156 +66,94 @@ https://www.youtube.com/watch?v=ou-buaC1XYg&t=26s
 * Comments on voting for gathering feedback and insights.
 * Social network and messenger sharing for increased reach.
 * Visibility control of voting results on the frontend.
-* Send Thank you messages to voter via email, SMS, or WhatsApp after successfull voting.
+* Send Thank you messages to voter via email, SMS, or WhatsApp after successful voting.
 * Localization for translation into any language.
 * Voting results reporting in Excel, PDF, or JSON format for analysis and sharing.
 
 **Single Poll plugin to create & manage all your polls & voting contests, Let's give it a TRY!!**
 
-== How to Create a Voting Contest in WordPress Website? - WP Poll plugin & Voting plugin ==
+== How to Create a Voting Contest in WordPress Website? - Poll plugin & Voting plugin ==
 https://www.youtube.com/watch?v=l4FgDCrxtxc&t=4s
 
-== How to Create a Poll in WordPress Website? -  WP Poll plugin & Voting plugin ==
+== How to Create a Poll in WordPress Website? - Poll plugin & Voting plugin ==
 https://www.youtube.com/watch?v=whGZFR4rfcc&t=6s
 
-== Screenshots ==
+== External services ==
 
-1.  WP Poll Maker - front end voting contest preview
-2.  WP Poll Maker - front end poll preview
-3.  WP Poll Maker - voting contest list view preview
-4.  WP Poll Maker - voting contest multi color view preview
-5.  WP Poll Maker - poll multi color view preview
-6.  WP Poll Maker - voting contest options backend
-7.  WP Poll Maker - poll options backend
-8.  WP Poll Maker - all available addons to enhance features
-9.  WP Poll Maker - Backend Dashboard & Voting Result view
-10. WP Poll Maker - Voter's Collected Data
-11. WP Poll Maker - Poll plugin general setting
-12. WP Poll Maker -Poll plugin social sharing setting
-13. WP Poll Maker -Poll plugin advance setting
-13. WP Poll Maker PRO - OTP based Voting setting
-14. WP Poll Maker - Localization and translation setting
-15. WP Poll Maker PRO - OTP Contact form builder
+This plugin may connect to the following third-party services when the related features are used.
 
+= hCaptcha =
+
+This plugin can load the hCaptcha script on poll and voting pages when hCaptcha protection is enabled in your poll settings.
+
+* **What it is used for:** To verify that a visitor is human before accepting a vote.
+* **What data is sent and when:** When hCaptcha is enabled and a visitor loads a poll page or submits a vote, the visitor's browser loads scripts from hCaptcha and may send challenge/response data required to complete the captcha.
+* **Service provider:** Intuition Machines, Inc.
+* **Terms of service:** https://www.hcaptcha.com/terms
+* **Privacy policy:** https://www.hcaptcha.com/privacy
+
+= InfoTheme Store API =
+
+When you open the ePoll admin screens for templates, add-ons, documentation, or FAQs, the plugin may request catalog and help content from InfoTheme servers.
+
+* **What it is used for:** To display available templates, add-ons, documentation links, and support resources inside the WordPress admin.
+* **What data is sent and when:** When an administrator opens the relevant ePoll admin pages, the plugin sends HTTP requests to InfoTheme endpoints. No visitor voting data is sent by this feature.
+* **Service provider:** InfoTheme
+* **Terms of service:** https://infotheme.net/terms
+* **Privacy policy:** https://infotheme.net/privacy-policy
 
 == Installation ==
-* Unzip the downloaded plugin and upload the folder "it-epoll-wp-voting" to the "/wp-content/plugins/" directory.
-* Go to the plugin menu in WordPress and activate the plugin.
-* Go to the left hand side of admin menu and click on "ePoll - Poll plugin & Voting plugin" and Click to Poll or Contest click to create
-* In title section add your question eg("Who is the founder of Wordpress ?").
-* Click to "Add Option" button and in "Option Name" write on of your option's name eg(Bill Gates), and click to "upload" button to upload an image to this option eg(You can upload bill gate's photo here), So you can add other options with the same process.
-* You can activate / inactivate poll/contest by just selecting "Poll Status" -> Live/End
-* You can change contest design into list and grid by "Poll Style" -> Grid/List
-* Under Addons Section you can activate multiple addons as per your requirements.
-* Under Themes Section you can activate multiple themes of ePoll as per requirements.
+
+* Unzip the downloaded package and upload the folder `epoll-wp-voting` to `/wp-content/plugins/`.
+* Activate the plugin through the Plugins menu in WordPress.
+* Go to **ePoll** in the admin menu to create a poll or contest.
+* Use the provided shortcodes to embed polls on pages and posts.
 
 == Frequently Asked Questions ==
 
 = How many poll options or contest candidates can I add? =
-You can add unlimited poll options and contest candidates with this plugin.
 
-= Is the interface user-friendly for creating polls and contests? =
-Yes, the plugin has an easy-to-use interface that allows you to create polls and contests in just a few seconds.
+You can add unlimited poll options and contest candidates.
 
-= How can I display the voting contest on my website? =
-You can choose between In-List Style and Grid View to display the voting contest.
+= Can I make voting private? =
 
-= Can I customize the colors of the polls or contests to match my website theme? =
-Yes, you can customize the colors according to your website theme or branding.
+Yes. Use the voting access code feature in poll settings.
 
-= Is there a way to make the voting private? =
-Yes, the plugin offers Voting Access Code feature which allows you to make the voting private.
+= Can I use shortcodes? =
 
-= Can I share the poll or contest on social media? =
-Yes, you can share the poll or contest with others via Facebook, Twitter, and WhatsApp.
+Yes. Use `[IT_EPOLL_VOTING id="Your Poll ID" type="list/grid"][/IT_EPOLL_VOTING]` for contests and `[IT_EPOLL_POLL id="Your Poll ID" type="list/grid"][/IT_EPOLL_POLL]` for polls.
 
-= Are there shortcodes available to place the poll or voting contest on my website? =
-Yes, you can use the shortcode [IT_EPOLL_VOTING id="Your Poll ID" type="list/grid"] to place the voting contest and [IT_EPOLL_POLL id="Your Poll ID" type="list/grid"] to place the poll.
+== Screenshots ==
 
-= Can I customize the text of the poll or contest for my local language? =
-Yes, the plugin offers localization feature which allows you to change the poll or contest text as per your local language.
+1. Front end voting contest preview
+2. Front end poll preview
+3. Voting contest list view preview
+4. Backend poll options
+5. Backend dashboard and voting results
 
-= What additional features does the plugin provide in the dashboard? =
-The plugin offers a How-to Guide, Support Ticket, New Addons & Themes Update, and FAQ's System in the dashboard for easy access to support and updates.
+== Changelog ==
 
-= Can I collect voter's data using this plugin? =
-Yes, the plugin comes with a voter form builder that allows you to collect any information you want from voters, such as email, name, phone number, and address.
+= 3.9 =
+* WordPress.org automated review compliance update.
+* Enabled built-in features previously marked premium-only: multiple choice voting, after-vote-end result visibility, poll start scheduling, and color customization.
+* Frontend branding/credit links now require explicit administrator opt-in.
+* Removed custom add-on/template ZIP upload and executable PHP installation from uploads.
+* Replaced PHP sessions with cookie-based vote tracking to avoid full-page cache bypass.
+* Bundled templates and add-ons only; no remote executable installs.
 
+= 3.8 =
+* WordPress.org review compliance update.
+* Removed Google Analytics tracking integration.
+* Fixed plugin license header and text domain (`epoll-wp-voting`).
+* Added external services documentation.
+* Improved input sanitization, nonce verification, and direct file access protection.
+* User-uploaded templates and add-ons are now stored in the uploads directory.
+* Disabled remote executable package installation.
+* Updated jQuery Validation library to 1.22.1.
+* Removed backup translation files from the distribution package.
 
-== Support & Helpful Links ==
-
-* You can check in dashboard "How to Guide & FAQ's Section" for documentation & general help.
-* [Create A Support Ticket](https://tickets.infotheme.net)
-* [Create A Forum Topic](https://wordpress.org/support/plugin/epoll-wp-voting/)
-* ["Say Hi" on WhatsApp](https://wa.me/917055401115)
-* ["Say Hi" on Facebook Messenger](https://m.me/infotheme)
-* ["Write An Email" & Send Us](mailto:infotheme.in@gmail.com)
-* [MakeMyPoll Poll Maker - for non-Wordpress Site](https://makemypoll.com/)
-
-== Change Log ==
-
-= 1.0 =
-* Initial public release. 
-* Date: 1-Feb-2017
-
-= 2.0 =
-* Secondary public release. 
-* Date: 1-Jan-2018
-
-= 3.0 =
-* Third public release. 
-* Date: 14-Dec-2018
-* Resolved index image issue
-* Resolved permalink issues
-* Update with latest wp version 5.6.2
-
-= 3.0 =
-* Date: 8-Apr-2022
-* Update with latest wp version 6.0
-
-= 3.0 =
-* Date: 12-Jul-2022
-* This Voting System Plugin is now Multilingual Supported
-* Translated to German / Deutsch Language
-* Translated to Hindi Language
-* Translated to English-United States Language
-* Translated to Espanol / Spanish States Language
-
-= 3.1 =
-* Date: 14-Apr-2023
-* Added Poll System & Voting Contest Both
-* More Then 100+ Features
-* Introduced ePoll engine with Multiple ePoll Addons & Themes
-* Now it's complete contest, voting & poll system.
-* Multilingual Supported
-
-= 3.1 =
-* Date: 12-May-2023
-* Cookies Bug Resolved
-* New Languages Added
-* Afrikaans, Arabic, Bengali (Bangladesh), German, English (UK), English (United States),  Spanish (Spain), Portuguese (Portugal) - Available Complete
-* French (France), Hindi, Indonesian, Italian, Japanese, Javanese, Korean, Marathi, Dutch,  Portuguese (Portugal), Russian, Swedish, Tamil, Tamil (Sri Lanka), Telugu, Turkish, Urdu, Vietnamese, Chinese (China) - Added partial
-
-= 3.2 =
-* Date: 7-Mar-2024
-* Security Update (CSRF & XSS Fix)
-
-
-= 3.3 =
-* Date: 9-Mar-2024
-* Security Update (CSRF & XSS Fix)
-* Nonce Security Fix
-
-= 3.4 =
-* Date: 11-Mar-2024
-* Security Update (CSRF & XSS Fix)
-* Sanitization and Nonce Security Fix
-
-= 3.5 =
-* Date: 16-Jul-2024
-* Arbitrary File Upload Issue Fix
-* Sanitization and Nonce Security Fix
+= 3.7 =
+* Removed violation content from readme and plugin.
 
 = 3.6 =
-* Date: 15-Feb-2025
-* 🛠️ Fixed jQuery conflict during voting ✅ and ensured voting applies to all contests 🏆 as per voter selection for both Voting Contest & Poll 📊.
+* Fixed jQuery conflict during voting and ensured voting applies to selected contests.

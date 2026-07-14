@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 //Add ePoll Gutenberg Block Scripts
 if(!function_exists('it_epoll_enque_guten_block_js')){
 
@@ -6,11 +9,12 @@ if(!function_exists('it_epoll_enque_guten_block_js')){
 		$guttenBlockPath = plugins_url( 'assets/js/block.js', dirname(__FILE__) );
 		wp_enqueue_script(
 			'it_epoll_gutenblock',
-			$guttenBlockPath, 
-			['wp-blocks'],
-			$guttenBlockPath
+			$guttenBlockPath,
+			array( 'wp-blocks' ),
+			IT_EPOLL_VERSION,
+			true
 		);
-		wp_enqueue_style( 'it_epoll_gutenblock-style', plugins_url( 'assets/css/editor.css', dirname(__FILE__) ),true);
+		wp_enqueue_style( 'it_epoll_gutenblock-style', plugins_url( 'assets/css/editor.css', dirname(__FILE__) ), array(), IT_EPOLL_VERSION );
 	
 		do_action('it_epoll_module_editor_script_enque');
 		
@@ -31,7 +35,7 @@ if(!function_exists('it_epoll_js_register')){
 		wp_enqueue_style( 'wp-color-picker' ); 
 		wp_enqueue_script('thickbox');
 		
-        wp_register_script('it_epoll_js', plugins_url('assets/js/it_epollv3.js', dirname(__FILE__) ), array('jquery','media-upload','wp-color-picker','thickbox'));
+        wp_register_script('it_epoll_js', plugins_url('assets/js/it_epollv3.js', dirname(__FILE__) ), array('jquery','media-upload','wp-color-picker','thickbox'), IT_EPOLL_VERSION, true);
 		wp_enqueue_script('it_epoll_js');
 
 		do_action('it_epoll_module_admin_script_enque');
@@ -43,7 +47,7 @@ if(!function_exists('it_epoll_css_register')){
 	
 	add_action( 'admin_enqueue_scripts', 'it_epoll_css_register' );
 	function it_epoll_css_register() {
-		wp_register_style('it_epoll_css', plugins_url('assets/css/it_epollv3.css', dirname(__FILE__) ));
+		wp_register_style('it_epoll_css', plugins_url('assets/css/it_epollv3.css', dirname(__FILE__) ), array(), IT_EPOLL_VERSION );
 		
 		wp_enqueue_style(array('thickbox','it_epoll_css'));
 
@@ -58,11 +62,11 @@ if(!function_exists('it_epoll_enqueue_style')){
 	
 	add_action( 'wp_enqueue_scripts', 'it_epoll_enqueue_style' );
 	function it_epoll_enqueue_style() {
-		wp_enqueue_style( 'it_epoll_core', plugins_url('assets/css/epoll-core.css', dirname(__FILE__) ), false ); 
+		wp_enqueue_style( 'it_epoll_core', plugins_url('assets/css/epoll-core.css', dirname(__FILE__) ), array(), IT_EPOLL_VERSION );
 	
-		wp_enqueue_style( 'it_epoll_style', plugins_url('assets/css/it_epoll_frontendv3.css', dirname(__FILE__) ), false ); 
+		wp_enqueue_style( 'it_epoll_style', plugins_url('assets/css/it_epoll_frontendv3.css', dirname(__FILE__) ), array(), IT_EPOLL_VERSION );
 		
-		wp_enqueue_style( 'it_epoll_opinion_style', plugins_url('assets/css/theme/it_epoll_opinion_fontendv3.css', dirname(__FILE__) ), false ); 
+		wp_enqueue_style( 'it_epoll_opinion_style', plugins_url('assets/css/theme/it_epoll_opinion_fontendv3.css', dirname(__FILE__) ), array(), IT_EPOLL_VERSION ); 
 		do_action('it_epoll_module_css_enque');
 	}
 }
@@ -71,6 +75,15 @@ if(!function_exists('it_epoll_enqueue_style')){
 if(!function_exists('it_epoll_enqueue_script')){
 	add_action( 'wp_enqueue_scripts', 'it_epoll_enqueue_script' );	
 	function it_epoll_enqueue_script() {
+		if ( get_option( 'it_epoll_settings_hcaptcha_voting' ) ) {
+			wp_enqueue_script(
+				'hcaptcha',
+				'https://www.hCaptcha.com/1/api.js',
+				array(),
+				'1.0',
+				true
+			);
+		}
 		do_action('it_epoll_module_script_enque');
 		wp_localize_script( 'it_epoll_common_js', 'it_epoll_ajax_obj', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
 		

@@ -1,4 +1,8 @@
-<?php /*
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+/*
 *Name: Base Addon - ePoll Engine
 *Description: This is default addon developed for epoll voting version 3.1 and later.
 *Version: 1.0

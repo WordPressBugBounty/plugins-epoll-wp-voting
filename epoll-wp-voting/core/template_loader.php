@@ -1,4 +1,7 @@
 <?php 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /***************
  * Author: Rahul Negi
  * Team: InfoTheme
@@ -7,30 +10,30 @@
  * Happy Coding.....
  **************/
 
-if(!function_exists('load_it_epoll_theme')){
+if(!function_exists('it_epoll_load_theme')){
     
-    function load_it_epoll_theme(){
+    function it_epoll_load_theme(){
         $active_themes = array('default','default-1');
 
         if(get_option('it_epoll_active_theme')){
             $active_themes = get_option('it_epoll_active_theme');
         }
-        array_map('connect_it_epoll_themes',$active_themes);
+        array_map('it_epoll_connect_themes',$active_themes);
     }
 
 }
 
-if(!function_exists('connect_it_epoll_themes')){
-    function connect_it_epoll_themes($theme){
+if(!function_exists('it_epoll_connect_themes')){
+    function it_epoll_connect_themes($theme){
 
-        $theme_path = IT_EPOLL_DIR_PATH . 'frontend/templates/';
-		
-        $theme_file = $theme_path.$theme.'/template.php';
-        if(file_exists($theme_file)){
-            include_once($theme_file);
-        }else{
-			$theme_file = $theme_path.'default/template.php';
-			include_once($theme_file);
+        $theme_path = it_epoll_resolve_theme_path( $theme );
+        $theme_file = $theme_path ? $theme_path . 'template.php' : '';
+        if ( $theme_file && file_exists( $theme_file ) ) {
+            include_once( $theme_file );
+        } else {
+			$default_path = it_epoll_resolve_theme_path( 'default' );
+			$theme_file   = $default_path ? $default_path . 'template.php' : IT_EPOLL_DIR_PATH . 'frontend/templates/default/template.php';
+			include_once( $theme_file );
 		}
     }
 }
@@ -43,34 +46,38 @@ if(!function_exists('it_epoll_activated_themes_data')){
 }
 
 
-load_it_epoll_theme(); // Calling Load Theme;
+it_epoll_load_theme(); // Calling Load Theme;
 
-if(!function_exists('get_it_epoll_poll_template')){
+if(!function_exists('it_epoll_get_poll_template')){
 	
-	add_filter( 'single_template', 'get_it_epoll_poll_template' );
+	add_filter( 'single_template', 'it_epoll_get_poll_template' );
     
-	function get_it_epoll_poll_template($single_template) {
+	function it_epoll_get_poll_template($single_template) {
 		global $post;
         $active_theme = 'default';
 		$active_theme = get_post_meta($post->ID,'it_epoll_poll_theme',true);
 		
 		if ($post->post_type == 'it_epoll_poll') {
-			$single_template_file = IT_EPOLL_DIR_PATH . 'frontend/templates/'.$active_theme.'/cpt/it_epoll_poll.php';
+			$theme_base = it_epoll_resolve_theme_path( $active_theme );
+			$single_template_file = $theme_base ? $theme_base . 'cpt/it_epoll_poll.php' : '';
 				
-			if(is_file($single_template_file)){
+			if ( $single_template_file && is_file( $single_template_file ) ) {
 				$single_template = $single_template_file;
-			}else{
-				$single_template = IT_EPOLL_DIR_PATH . 'frontend/templates/default/cpt/it_epoll_poll.php';
+			} else {
+				$default_base = it_epoll_resolve_theme_path( 'default' );
+				$single_template = $default_base ? $default_base . 'cpt/it_epoll_poll.php' : IT_EPOLL_DIR_PATH . 'frontend/templates/default/cpt/it_epoll_poll.php';
 			}
 		}//Template to load poll
 
 		if ($post->post_type == 'it_epoll_opinion') {
-			$single_template_file = IT_EPOLL_DIR_PATH . 'frontend/templates/'.$active_theme.'/cpt/it_epoll_opinion.php';
+			$theme_base = it_epoll_resolve_theme_path( $active_theme );
+			$single_template_file = $theme_base ? $theme_base . 'cpt/it_epoll_opinion.php' : '';
 				
-			if(is_file($single_template_file)){
+			if ( $single_template_file && is_file( $single_template_file ) ) {
 				$single_template = $single_template_file;
-			}else{
-				$single_template = IT_EPOLL_DIR_PATH . 'frontend/templates/default/cpt/it_epoll_opinion.php';
+			} else {
+				$default_base = it_epoll_resolve_theme_path( 'default' );
+				$single_template = $default_base ? $default_base . 'cpt/it_epoll_opinion.php' : IT_EPOLL_DIR_PATH . 'frontend/templates/default/cpt/it_epoll_opinion.php';
 			}
 		}//Template to load voting
 		

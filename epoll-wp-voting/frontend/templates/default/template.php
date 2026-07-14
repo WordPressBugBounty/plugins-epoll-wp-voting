@@ -1,4 +1,8 @@
-<?php /*
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+/*
 *Name: Base Theme - (Matsya)
 *Description: This is default theme developed for epoll voting version 3.1 and later. Firstly introduced in 3.1 version
 *Version: 1.0

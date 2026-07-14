@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 if(!function_exists('it_epoll_advance_core_voting_add_fields')){
     add_action('it_epoll_options_advanced_fields','it_epoll_advance_core_voting_add_fields');
         function it_epoll_advance_core_voting_add_fields(){?>
@@ -7,7 +10,7 @@ if(!function_exists('it_epoll_advance_core_voting_add_fields')){
                 <tr>
                     <td>  
                         <label>
-                            <input type="checkbox" name="it_epoll_settings_cookies_blocking" value="1"<?php if(get_option('it_epoll_settings_cookies_blocking')) echo esc_attr(' checked','it_epoll');?>/> <?php echo esc_attr('Enable Cookies Based Voting','it_epoll');?>
+                            <input type="checkbox" name="it_epoll_settings_cookies_blocking" value="1"<?php if(get_option('it_epoll_settings_cookies_blocking')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php echo esc_attr('Enable Cookies Based Voting','epoll-wp-voting');?>
                         </label> 
                     </td>
                 </tr> 
@@ -44,163 +47,163 @@ if(!function_exists('it_epoll_default_translation_fields')){
         <table class="widefat white-border-table">
                             <tbody>
                                 <tr>
-                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Vote Text','it_epoll');?></th>
+                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Vote Text','epoll-wp-voting');?></th>
                                 </tr>
                                 <tr>
                                     <td>   
                                         <label><?php /* translators: %s: voting numbers text*/
-                                        echo esc_attr('%s Vote','it_epoll');?></label>   
+                                        echo esc_attr('%s Vote','epoll-wp-voting');?></label>   
                                     </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_vote_number_text" value="<?php echo esc_attr($it_epoll_settings_vote_number_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_vote_number_text" value="<?php echo esc_attr($it_epoll_settings_vote_number_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>   
                                         <label><?php /* translators: %s: voting number text*/
-                                        echo esc_attr('%s Votes','it_epoll');?></label>       
+                                        echo esc_attr('%s Votes','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_vote_numbers_text" value="<?php echo esc_attr($it_epoll_settings_vote_numbers_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_vote_numbers_text" value="<?php echo esc_attr($it_epoll_settings_vote_numbers_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
-                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Button Text','it_epoll');?></th>
+                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Button Text','epoll-wp-voting');?></th>
                                 </tr>
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Result','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Result','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_result_button_text" value="<?php echo esc_attr($it_epoll_settings_result_button_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_result_button_text" value="<?php echo esc_attr($it_epoll_settings_result_button_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Vote','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Vote','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_vote_button_text" value="<?php echo esc_attr($it_epoll_settings_vote_button_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_vote_button_text" value="<?php echo esc_attr($it_epoll_settings_vote_button_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Back to Vote','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Back to Vote','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_result_back_button_text" value="<?php echo esc_attr($it_epoll_settings_result_back_button_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_result_back_button_text" value="<?php echo esc_attr($it_epoll_settings_result_back_button_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 
                                 <tr>
-                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Extra Text','it_epoll');?></th>
+                                    <td colspan="2" class="it_epoll_admin_table_bold_th"><?php echo esc_attr('Extra Text','epoll-wp-voting');?></th>
                                 </tr>
                                 
                                 <tr>
                                     <td>   
                                         <label><?php
                                         /* translators: %s: time left*/
-                                        echo esc_attr('%s Left','it_epoll');?></label>       
+                                        echo esc_attr('%s Left','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_time_left_text" value="<?php echo esc_attr($it_epoll_settings_time_left_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_time_left_text" value="<?php echo esc_attr($it_epoll_settings_time_left_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Live','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Live','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_live_badge_text" value="<?php echo esc_attr($it_epoll_settings_live_badge_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_live_badge_text" value="<?php echo esc_attr($it_epoll_settings_live_badge_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('End','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('End','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_end_badge_text" value="<?php echo esc_attr($it_epoll_settings_end_badge_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_end_badge_text" value="<?php echo esc_attr($it_epoll_settings_end_badge_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Upcoming','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Upcoming','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_upcoming_badge_text" value="<?php echo esc_attr($it_epoll_settings_upcoming_badge_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_upcoming_badge_text" value="<?php echo esc_attr($it_epoll_settings_upcoming_badge_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Share','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Share','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_share_badge_text" value="<?php echo esc_attr($it_epoll_settings_share_badge_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_share_badge_text" value="<?php echo esc_attr($it_epoll_settings_share_badge_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Share on','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Share on','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_share_on_menu_text" value="<?php echo esc_attr($it_epoll_settings_share_on_menu_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_share_on_menu_text" value="<?php echo esc_attr($it_epoll_settings_share_on_menu_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Already Voted','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Already Voted','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_already_voted_text" value="<?php echo esc_attr($it_epoll_settings_already_voted_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_already_voted_text" value="<?php echo esc_attr($it_epoll_settings_already_voted_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Voted','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Voted','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_voted_text" value="<?php echo esc_attr($it_epoll_settings_voted_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_voted_text" value="<?php echo esc_attr($it_epoll_settings_voted_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('You Already Participated!','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('You Already Participated!','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_participated_text" value="<?php echo esc_attr($it_epoll_settings_participated_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_participated_text" value="<?php echo esc_attr($it_epoll_settings_participated_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Verify','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Verify','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_btn_text" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_btn_text,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_btn_text" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_btn_text,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Your Access Code','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Your Access Code','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_text_hint" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_text_hint,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_text_hint" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_text_hint,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr> 
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Enter Your Voting Access Pin','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Enter Your Voting Access Pin','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_text_title" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_text_title,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_verify_access_code_text_title" value="<?php echo esc_attr($it_epoll_settings_verify_access_code_text_title,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>   
-                                        <label><?php echo esc_attr('Share on Social Media','it_epoll');?></label>       
+                                        <label><?php echo esc_attr('Share on Social Media','epoll-wp-voting');?></label>       
                                         </td>
                                     <td>      
-                                        <input type="text" class="widefat" name="it_epoll_settings_share_on_social_media" value="<?php echo esc_attr($it_epoll_settings_share_on_social_media,'it_epoll');?>"/>
+                                        <input type="text" class="widefat" name="it_epoll_settings_share_on_social_media" value="<?php echo esc_attr($it_epoll_settings_share_on_social_media,'epoll-wp-voting');?>"/>
                                     </td>
                                 </tr>
                                 

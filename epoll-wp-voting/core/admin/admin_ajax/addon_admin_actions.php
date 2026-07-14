@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 //activate addon
 if(!function_exists('ajax_it_epoll_addon_action_activate')){
 
@@ -13,13 +16,13 @@ if(!function_exists('ajax_it_epoll_addon_action_activate')){
              //Function to check user capability
              it_epoll_admin_ajax_capabilities_check();
 
-            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field($_POST['wp_nonce']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
-            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field($_POST['extension_id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
+            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field( wp_unslash( $_POST['extension_id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
             if ( ! wp_verify_nonce( $nonce, 'it_epoll_addon_action_activate_'.$extension_id ) )  exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Security Check Failed! :- Please Refresh your page')));
            
             
-            if(isset($_POST['data']['id'])) $id = sanitize_text_field($_POST['data']['id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
-            if(isset($_POST['data']['name']))  $name = sanitize_text_field($_POST['data']['name']); else $name = "Unknown";
+            if(isset($_POST['data']['id'])) $id = sanitize_text_field( wp_unslash( $_POST['data']['id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['data']['name']))  $name = sanitize_text_field( wp_unslash( $_POST['data']['name'] ) ); else $name = "Unknown";
            
             $active_addons = array('default');
 
@@ -34,7 +37,7 @@ if(!function_exists('ajax_it_epoll_addon_action_activate')){
             if(!in_array($id,$active_addons)){
                 array_push($active_addons,$id);
                 update_option('it_epoll_active_addon',$active_addons);
-                run_activator_script_it_epoll_addon($id);
+                it_epoll_run_activator_script_addon($id);
                 exit(wp_json_encode(array('sts'=>200,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Addon Has Been Activated')));
             }else{
                 exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Already Activated')));
@@ -61,12 +64,12 @@ if(!function_exists('ajax_it_epoll_addon_action_deactivate')){
             //Function to check user capability
             it_epoll_admin_ajax_capabilities_check();
 
-            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field($_POST['wp_nonce']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
-            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field($_POST['extension_id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
+            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field( wp_unslash( $_POST['extension_id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
             if ( ! wp_verify_nonce( $nonce, 'it_epoll_addon_action_deactivate_'.$extension_id ) )   exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Security Check Failed! :- Please Refresh your page')));
             
-            if(isset($_POST['data']['id'])) $id = sanitize_text_field($_POST['data']['id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
-            if(isset($_POST['data']['name']))  $name = sanitize_text_field($_POST['data']['name']); else $name = "Unknown";
+            if(isset($_POST['data']['id'])) $id = sanitize_text_field( wp_unslash( $_POST['data']['id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['data']['name']))  $name = sanitize_text_field( wp_unslash( $_POST['data']['name'] ) ); else $name = "Unknown";
            
             $active_addons = array('default');
 
@@ -78,7 +81,7 @@ if(!function_exists('ajax_it_epoll_addon_action_deactivate')){
                 unset($active_addons[$key]);
                
                 update_option('it_epoll_active_addon',$active_addons);
-                run_deactivator_script_it_epoll_addon($id);
+                it_epoll_run_deactivator_script_addon($id);
                 exit(wp_json_encode(array('sts'=>200,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Addon Has Been Deactivated')));
             }else{
                 exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Already Deactivated')));
@@ -106,22 +109,19 @@ if(!function_exists('ajax_it_epoll_addon_action_uninstall')){
                 //Function to check user capability
              it_epoll_admin_ajax_capabilities_check();
 
-             if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field($_POST['wp_nonce']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
-             if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field($_POST['extension_id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+             if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
+             if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field( wp_unslash( $_POST['extension_id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
              if ( ! wp_verify_nonce( $nonce, 'it_epoll_addon_action_uninstall_'.$extension_id ) )  exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Security Check Failed! :- Please Refresh your page')));
             
             
-            if(isset($_POST['data']['id'])) $id = sanitize_text_field($_POST['data']['id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['data']['id'])) $id = sanitize_text_field( wp_unslash( $_POST['data']['id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
              
-            if(isset($_POST['data']['path'])) $path = sanitize_text_field($_POST['data']['path']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon path')));
+            if(isset($_POST['data']['path'])) $path = sanitize_text_field( wp_unslash( $_POST['data']['path'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon path')));
             
-            if(isset($_POST['data']['name']))  $name = sanitize_text_field($_POST['data']['name']); else $name = "Unknown";
+            if(isset($_POST['data']['name']))  $name = sanitize_text_field( wp_unslash( $_POST['data']['name'] ) ); else $name = "Unknown";
             
           
             WP_Filesystem();
-                if ( ! function_exists( 'wp_handle_upload' ) ) {
-                    require_once( ABSPATH . 'wp-admin/includes/file.php' );
-                }
             $active_addons = array('default');
 
             if(get_option('it_epoll_active_addon')){
@@ -129,7 +129,10 @@ if(!function_exists('ajax_it_epoll_addon_action_uninstall')){
             }
 
             if(!in_array($path,$active_addons) and $path != 'default' and $path != null and $path != "/"){
-                $addon_path = IT_EPOLL_DIR_PATH . 'backend/addons/'.$path;
+                $addon_path = trailingslashit( it_epoll_get_uploads_addons_path() ) . $path;
+                if ( ! file_exists( $addon_path ) ) {
+                    $addon_path = trailingslashit( it_epoll_get_bundled_addons_path() ) . $path;
+                }
                
                 if(file_exists($addon_path)){
                      $wp_filesystem->delete($addon_path,true);//removing files of addon
@@ -161,22 +164,20 @@ if(!function_exists('ajax_it_epoll_addon_action_install_update')){
             //Function to check user capability
             it_epoll_admin_ajax_capabilities_check();
 
-            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field($_POST['wp_nonce']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
-            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field($_POST['extension_id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['wp_nonce']))  $nonce = sanitize_text_field( wp_unslash( $_POST['wp_nonce'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Nonce')));
+            if(isset($_POST['extension_id']))  $extension_id = sanitize_text_field( wp_unslash( $_POST['extension_id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
             if ( ! wp_verify_nonce( $nonce, 'it_epoll_addon_action_install_update_'.$extension_id ) ) exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'Security Check Failed! :- Please Refresh your page')));
             
-            if(isset($_POST['data']['id'])) $id = sanitize_text_field($_POST['data']['id']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
+            if(isset($_POST['data']['id'])) $id = sanitize_text_field( wp_unslash( $_POST['data']['id'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon Id')));
              
-            if(isset($_POST['data']['url'])) $download_url = sanitize_text_field($_POST['data']['url']); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon url')));
+            if(isset($_POST['data']['url'])) $download_url = sanitize_text_field( wp_unslash( $_POST['data']['url'] ) ); else exit(wp_json_encode(array('sts'=>404,'data'=>array(),'msg'=>'Invalid Addon url')));
             
-            if(isset($_POST['data']['name']))  $name = sanitize_text_field($_POST['data']['name']); else $name = "Unknown";
+            if(isset($_POST['data']['name']))  $name = sanitize_text_field( wp_unslash( $_POST['data']['name'] ) ); else $name = "Unknown";
            
            
-            $download_url = esc_url($download_url,'it_epoll');
+            $download_url = esc_url($download_url,'epoll-wp-voting');
             if(it_epoll_MyDomainCheck($download_url)){
-                $response = it_epoll_install_from_store_zip($download_url,'backend/addons/','it_epoll_upload_addon','addon');
-                print_r($response);
-                exit;
+                wp_send_json( it_epoll_install_from_store_zip( $download_url, 'backend/addons/', 'it_epoll_upload_addon', 'addon' ) );
             }else{
                 exit(wp_json_encode(array('sts'=>404,'data'=>array('name'=>$name,'id'=>$id),'msg'=>'You don\'t have permission to do this!')));
             }

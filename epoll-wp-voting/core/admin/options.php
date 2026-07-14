@@ -1,9 +1,10 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { exit; } ?>
 <div class="wrap">
 <form method="post" action="options.php" id="it_epoll_options_fields">
     <h1 class="epoll_admin_options-header">
-        <?php esc_attr_e('Options','it_epoll');?>
-        <button type="submit" class="page-title-action button button-primary right" role="submit"><span class="upload"><?php esc_attr_e('Save Changes','it_epoll');?></span></button>
-        <a target="_blank" href="<?php echo esc_url('https://infotheme.net/item/epoll-pro/','it_epoll');?>" class="button right" style="margin:0 25px;position:relative;bottom:3px;" role="button"><span class="upload"><?php esc_attr_e('Buy ePoll PRO','it_epoll');?></span></a>
+        <?php esc_attr_e('Options','epoll-wp-voting');?>
+        <button type="submit" class="page-title-action button button-primary right" role="submit"><span class="upload"><?php esc_attr_e('Save Changes','epoll-wp-voting');?></span></button>
+        <a href="<?php echo esc_url( admin_url( 'admin.php?page=epoll_upgrade' ) ); ?>" class="button right" style="margin:0 25px;position:relative;bottom:3px;" role="button"><span class="upload"><?php esc_attr_e('Upgrade to Pro','epoll-wp-voting');?></span></a>
    </h1>
     <?php
          settings_fields( 'it_epoll_opt_settings' );
@@ -14,27 +15,27 @@
                 <ul class="epoll_admin_options-tabs-container">
                     <li>
                         <a href="#general" class="epoll_admin_option-item current">
-                        <i class="dashicons dashicons-admin-settings"></i> <?php esc_attr_e('General','it_epoll');?>
+                        <i class="dashicons dashicons-admin-settings"></i> <?php esc_attr_e('General','epoll-wp-voting');?>
                         </a>
                     </li>
                     <li>
                         <a href="#sharing" class="epoll_admin_option-item">
-                        <i class="dashicons dashicons-share"></i> <?php esc_attr_e('Sharing','it_epoll');?>
+                        <i class="dashicons dashicons-share"></i> <?php esc_attr_e('Sharing','epoll-wp-voting');?>
                         </a>
                     </li>
                     <li>
                         <a href="#advanced" class="epoll_admin_option-item">
-                        <i class="dashicons dashicons-admin-generic"></i> <?php esc_attr_e('Advanced','it_epoll');?>
+                        <i class="dashicons dashicons-admin-generic"></i> <?php esc_attr_e('Advanced','epoll-wp-voting');?>
                         </a>
                     </li>
                     <li>
-                        <a href="#notifications" class="epoll_admin_option-item">
-                        <i class="dashicons dashicons-email"></i> <?php esc_attr_e('Email & Notifications','it_epoll');?>
+                        <a href="#pro" class="epoll_admin_option-item it_epoll-pro-tab-link">
+                        <i class="dashicons dashicons-lock"></i> <?php esc_attr_e('Pro Features','epoll-wp-voting');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','epoll-wp-voting');?></span>
                         </a>
                     </li>
                     <li>
                         <a href="#translate" class="epoll_admin_option-item">
-                        <i class="dashicons dashicons-admin-site"></i> <?php esc_attr_e('Localize / Translation','it_epoll');?>
+                        <i class="dashicons dashicons-admin-site"></i> <?php esc_attr_e('Localize / Translation','epoll-wp-voting');?>
                         </a>
                     </li>
                     <?php do_action('it_epoll_options_extra_tabs_title');?>
@@ -48,14 +49,14 @@
                             <tr>
                                 <td>   
                                     <label>
-                                        <input class="it_epoll_has_oncheck_div" type="checkbox" name="it_epoll_settings_hcaptcha_voting" value="1"<?php if(get_option('it_epoll_settings_hcaptcha_voting')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Enable hCaptch on Voting','it_epoll');?>
+                                        <input class="it_epoll_has_oncheck_div" type="checkbox" name="it_epoll_settings_hcaptcha_voting" value="1"<?php if(get_option('it_epoll_settings_hcaptcha_voting')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Enable hCaptch on Voting','epoll-wp-voting');?>
                                     </label>
-                                    <div class="it_epoll_oncheck_div <?php if(get_option('it_epoll_settings_hcaptcha_voting')) echo esc_attr(' it_epoll_oncheck_div_show','it_epoll');?>">
-                                        <label><?php esc_attr_e('hCaptcha Key','it_epoll');?></label>
-                                        <input type="text" class="widefat" name="it_epoll_settings_hcaptcha_key" value="<?php echo esc_attr(get_option('it_epoll_settings_hcaptcha_key'),'it_epoll');?>"/>
+                                    <div class="it_epoll_oncheck_div <?php if(get_option('it_epoll_settings_hcaptcha_voting')) echo esc_attr(' it_epoll_oncheck_div_show','epoll-wp-voting');?>">
+                                        <label><?php esc_attr_e('hCaptcha Key','epoll-wp-voting');?></label>
+                                        <input type="text" class="widefat" name="it_epoll_settings_hcaptcha_key" value="<?php echo esc_attr(get_option('it_epoll_settings_hcaptcha_key'),'epoll-wp-voting');?>"/>
                                         <hr>
-                                        <label><?php esc_attr_e('hCaptcha Security Salt','it_epoll');?></label>
-                                        <input type="text" class="widefat" name="it_epoll_settings_hcaptcha_salt" value="<?php echo esc_attr(get_option('it_epoll_settings_hcaptcha_salt'),'it_epoll');?>"/>
+                                        <label><?php esc_attr_e('hCaptcha Security Salt','epoll-wp-voting');?></label>
+                                        <input type="text" class="widefat" name="it_epoll_settings_hcaptcha_salt" value="<?php echo esc_attr(get_option('it_epoll_settings_hcaptcha_salt'),'epoll-wp-voting');?>"/>
                                     
                                     </div>
                                 </td>
@@ -63,29 +64,15 @@
                             <tr>
                                 <td>   
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_enable_comments"  value="1" <?php if(get_option('it_epoll_settings_enable_comments') == 1) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Enable Comments on Vote','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_enable_comments"  value="1" <?php if(get_option('it_epoll_settings_enable_comments') == 1) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Enable Comments on Vote','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td> 
-                                    <label>
-                                        <input type="checkbox" name="it_epoll_settings_ip_based_voting" disabled/> <?php esc_attr_e('Enable IP Based Voting','it_epoll');?>  <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span>  
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> 
-                                    <label>
-                                        <input type="checkbox" name="it_epoll_settings_otp_based_voting" disabled/> <?php esc_attr_e('Enable OTP Based Voting','it_epoll');?>  <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span>  
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td>   
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_disable_branding" disabled/> <?php esc_attr_e('Remove Poll Footer Branding Link','it_epoll');?>  <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span>  
+                                        <input type="checkbox" name="it_epoll_settings_show_frontend_branding" value="1"<?php if(get_option('it_epoll_settings_show_frontend_branding')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Show poll footer branding link on the frontend (opt-in)','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
@@ -102,42 +89,35 @@
                             <tr>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_voting_social_sharing" value="1"<?php if(get_option('it_epoll_settings_voting_social_sharing')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Enable Social Sharing on Voting','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_voting_social_sharing" value="1"<?php if(get_option('it_epoll_settings_voting_social_sharing')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Enable Social Sharing on Voting','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_poll_social_sharing" value="1"<?php if(get_option('it_epoll_settings_poll_social_sharing')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Enable Social Sharing on Poll','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_poll_social_sharing" value="1"<?php if(get_option('it_epoll_settings_poll_social_sharing')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Enable Social Sharing on Poll','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_social_option_facebook" value="1"<?php if(get_option('it_epoll_settings_social_option_facebook')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Facebook','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_social_option_facebook" value="1"<?php if(get_option('it_epoll_settings_social_option_facebook')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Facebook','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_social_option_twitter"  value="1"<?php if(get_option('it_epoll_settings_social_option_twitter')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Twitter','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_social_option_twitter"  value="1"<?php if(get_option('it_epoll_settings_social_option_twitter')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Twitter','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_social_option_whatsapp" value="1"<?php if(get_option('it_epoll_settings_social_option_whatsapp')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('WhatsApp','it_epoll');?>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        <?php esc_attr_e('More Social Links Available on Social Sharing Pro Addon','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span>
+                                        <input type="checkbox" name="it_epoll_settings_social_option_whatsapp" value="1"<?php if(get_option('it_epoll_settings_social_option_whatsapp')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('WhatsApp','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr>
@@ -151,125 +131,23 @@
                             <tr>
                                 <td>   
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_hide_voting_result" value="1"<?php if(get_option('it_epoll_settings_hide_voting_result')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Hide All Voting Results','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_hide_voting_result" value="1"<?php if(get_option('it_epoll_settings_hide_voting_result')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Hide All Voting Results','epoll-wp-voting');?>
                                     </label>
                                 </td>
                             </tr> 
                             <tr>
                                 <td>  
                                     <label>
-                                        <input type="checkbox" name="it_epoll_settings_hide_poll_result" value="1"<?php if(get_option('it_epoll_settings_hide_poll_result')) echo esc_attr(' checked','it_epoll');?>/> <?php esc_attr_e('Hide All Poll Results','it_epoll');?>
+                                        <input type="checkbox" name="it_epoll_settings_hide_poll_result" value="1"<?php if(get_option('it_epoll_settings_hide_poll_result')) echo esc_attr(' checked','epoll-wp-voting');?>/> <?php esc_attr_e('Hide All Poll Results','epoll-wp-voting');?>
                                     </label> 
                                 </td>
                             </tr> 
-                            <tr>
-                                <td>  
-                                    <label>
-                                        <input type="checkbox" name="it_epoll_settings_collect_email" disabled/> <?php esc_attr_e('Collect Email on Vote Submission','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span>
-                                    </label> 
-                                </td>
-                            </tr>  
-                            <tr>
-                                <td>   
-                                    <label><?php esc_attr_e('Enable OTP Based Voting','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span></label>       
-                                    <select name="it_epoll_settings_uniqe_vote" class="widefat" disabled>
-                                        <option value="0"<?php if(get_option('it_epoll_settings_uniqe_vote') == 0) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('No','it_epoll');?></option>
-                                        <option value="1"<?php if(get_option('it_epoll_settings_uniqe_vote') == 1) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('Yes','it_epoll');?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>   
-                                    <label><?php esc_attr_e('Enable Social Login','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span></label>       
-                                    <select name="it_epoll_settings_uniqe_vote" class="widefat" disabled>
-                                        <option value="0"<?php if(get_option('it_epoll_settings_uniqe_vote') == 0) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('No','it_epoll');?></option>
-                                        <option value="1"<?php if(get_option('it_epoll_settings_uniqe_vote') == 1) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('Yes','it_epoll');?></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>   
-                                    <label><?php esc_attr_e('Enable Voter Login','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php esc_attr_e('Pro','it_epoll');?></span></label>       
-                                    <select name="it_epoll_settings_uniqe_vote" class="widefat" disabled>
-                                        <option value="0"<?php if(get_option('it_epoll_settings_uniqe_vote') == 0) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('No','it_epoll');?></option>
-                                        <option value="1"<?php if(get_option('it_epoll_settings_uniqe_vote') == 1) echo esc_attr(' selected','it_epoll');?>><?php  esc_attr_e('Yes','it_epoll');?></option>
-                                    </select>
-                                </td>
-                            </tr>
                         </tbody>
                     </table>   
                     <?php do_action('it_epoll_options_advanced_fields');?>
                 </div>
-                <div class="epoll_admin_options-tabs-content" id="notifications">
-                    <table class="widefat border-table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <?php esc_attr_e('Vote Submission  / Thank You Email','it_epoll');?>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr> 
-                                <td>     
-                                    <label><?php esc_attr_e('Email Subject','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php  esc_attr_e('Pro','it_epoll');?></span></label>     
-                                    <input type="text" class="widefat" name="it_epoll_settings_thanks_email_subject" disabled/>
-                                </td>
-                            </tr> 
-                            <tr> 
-                                <td>     
-                                    <label><?php esc_attr_e('Email Content','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php  esc_attr_e('Pro','it_epoll');?></span></label>     
-                                    <textarea class="widefat" name="it_epoll_settings_thanks_email" disabled></textarea>
-                                </td>
-                            </tr> 
-                        </tbody>
-                    </table>
-
-                    <table class="widefat border-table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <?php esc_attr_e('OTP Based Voting Email','it_epoll');?>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr> 
-                                <td>     
-                                    <label><?php esc_attr_e('OTP Email Subject','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php  esc_attr_e('Pro','it_epoll');?></span></label>     
-                                    <input type="text" class="widefat" name="it_epoll_settings_otp_email_subject" disabled/>
-                                </td>
-                            </tr> 
-                            <tr> 
-                                <td>     
-                                    <label><?php esc_attr_e('OTP Email Content','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php  esc_attr_e('Pro','it_epoll');?></span></label>     
-                                    <textarea class="widefat" name="it_epoll_settings_otp_email" disabled></textarea>
-                                </td>
-                            </tr> 
-                        </tbody>
-                    </table>
-
-
-                    <table class="widefat border-table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <?php esc_attr_e('OTP / WhatsApp OTP Based Voting SMS Text','it_epoll');?>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr> 
-                                <td>     
-                                    <label><?php esc_attr_e('OTP SMS Text','it_epoll');?> <span class="it_epolladmin_pro_badge"><?php  esc_attr_e('Pro','it_epoll');?></span></label>     
-                                    
-                                    <textarea class="widefat" name="it_epoll_settings_sms_text" disabled></textarea>
-                                </td>
-                            </tr> 
-                        </tbody>
-                    </table>
-                    
-                    <?php do_action('it_epoll_options_notification_fields');?>
+                <div class="epoll_admin_options-tabs-content" id="pro">
+                    <?php include __DIR__ . '/partials/options-pro-features.php'; ?>
                 </div>
                 <div class="epoll_admin_options-tabs-content" id="translate">
                    
@@ -279,7 +157,7 @@
             </div>
         </div>
     </form>
-    <p class="epoll_admin_options-footer"><?php echo esc_attr('ePoll Version '.IT_EPOLL_VERSION,'it_epoll');?></p>
+    <p class="epoll_admin_options-footer"><?php echo esc_attr('ePoll Version '.IT_EPOLL_VERSION,'epoll-wp-voting');?></p>
 </div>
 <script type="text/javascript">
     jQuery.noConflict();
@@ -304,10 +182,60 @@
                 });
 
                 jQuery('.epoll_admin_options_tab-content '+tabNum).addClass('current');
+                itEpollOptionsToggleProModal();
             } else {
                 jQuery('.epoll_admin_options_tab-content #general').addClass('current');
             }
         });
+
+        function itEpollOptionsToggleProModal() {
+            var $panel = jQuery('#pro.it_epoll-pro-features-panel, #pro .it_epoll-pro-features-panel');
+            var $modal = jQuery('#it_epoll_pro_upgrade_modal');
+            var $overlay = jQuery('.it_epoll-pro-features-overlay');
+
+            if (location.hash === '#pro') {
+                $overlay.addClass('is-visible');
+                $modal.removeClass('is-hidden');
+            }
+        }
+
+        jQuery('.it_epoll-pro-tab-link').on('click', function() {
+            setTimeout(itEpollOptionsToggleProModal, 0);
+        });
+
+        jQuery('.it_epoll-pro-features-overlay').on('click', function(e) {
+            if (jQuery(e.target).is('.it_epoll-pro-features-overlay')) {
+                jQuery('#it_epoll_pro_upgrade_modal').removeClass('is-hidden');
+            }
+        });
+
+        jQuery('#it_epoll_pro_upgrade_modal').on('click', function(e) {
+            e.stopPropagation();
+        });
+
+        jQuery('.it_epoll-pro-modal-close').on('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            jQuery('#it_epoll_pro_upgrade_modal').addClass('is-hidden');
+        });
+
+        jQuery(document).on('keyup', function(e) {
+            if (e.key === 'Escape') {
+                jQuery('#it_epoll_pro_upgrade_modal').addClass('is-hidden');
+            }
+        });
+
+        if (location.hash === '#notifications') {
+            location.hash = '#pro';
+        }
+
+        if (location.hash === '#pro') {
+            jQuery('.epoll_admin_options_tab-content .epoll_admin_options-tabs-content').removeClass('current');
+            jQuery('#pro').addClass('current');
+            jQuery('.epoll_admin_options-tabs-container a').removeClass('current');
+            jQuery('.epoll_admin_options-tabs-container a[href="#pro"]').addClass('current');
+            itEpollOptionsToggleProModal();
+        }
     });
 
     jQuery('.epoll_admin_options_tab-content .epoll_admin_options-tabs-content').each(function(){
